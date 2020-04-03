@@ -9,16 +9,19 @@ import {withNavigation} from 'react-navigation'
 const Footer=({navigation})=>{
     return(
         <View style={styles.container}>
+            <View style={{
+                flexDirection:"row"
+            }}>
             <AntDesign style={styles.icon} name="checksquareo" size={25}/>
             <Entypo name="brush" size={25}/>
             <Feather style={styles.icon} name ="mic" size={25}/>
             <Feather name="image" size={25} />
+            </View>
             <View style={styles.button}>
-                <TouchableOpacity>
-                    <View style={{
-                        width:"100%",
-                        height:"100%"
-                    }}/>
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate('CreateNote')
+            }}>
+                <Feather name="plus" size={60} color="coral"/>
                 </TouchableOpacity>
             </View>
         </View>
@@ -34,7 +37,9 @@ const styles=StyleSheet.create({
         bottom:0,
         width:"100%",
         flexDirection:"row",
-        alignItems:"center"
+        alignItems:"center",
+        flex:1,
+        justifyContent:"space-between"
     },
     icon:{
         marginHorizontal:20
@@ -43,10 +48,13 @@ const styles=StyleSheet.create({
         height:70,
         width:70,
         borderRadius:70/2,
-        backgroundColor:'coral',
-        position:'absolute',
-        right:20,
-        bottom:20
+        right:30,
+        bottom:20,
+        backgroundColor:"#fff",
+        borderWidth:1,
+        borderColor:"lightgray",
+        justifyContent:"center",
+        alignItems:"center"
     }
 })
 export default withNavigation(Footer)

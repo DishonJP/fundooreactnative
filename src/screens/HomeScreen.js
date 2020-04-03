@@ -1,7 +1,6 @@
 import React,{useContext} from "react"
 import {View,Text,StyleSheet,Button} from "react-native"
 import { Context as AuthContext } from "../context/AuthContext"
-import {AntDesign} from 'react-native-vector-icons'
 import {SafeAreaView} from 'react-navigation'
 import Appbar from "../Components/Appbar"
 import Footer from "../Components/Footer"

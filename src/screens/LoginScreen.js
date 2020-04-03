@@ -5,8 +5,6 @@ import Spacer from "../Components/Spacer"
 import {Context as AuthContext} from '../context/AuthContext'
 const LoginScreen=({navigation})=>{
     const {state,signIn}=useContext(AuthContext)
-    console.log(state);
-    
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState('');
     return(
