@@ -1,11 +1,17 @@
-import React,{useContext} from "react"
+import React,{useContext,useEffect} from "react"
 import {View,Text,StyleSheet,Button} from "react-native"
 import { Context as AuthContext } from "../context/AuthContext"
+import {Context as NoteContext } from '../context/NoteContext'
 import {SafeAreaView} from 'react-navigation'
 import Appbar from "../Components/Appbar"
 import Footer from "../Components/Footer"
 const HomeScreen=({navigation})=>{
-    const {signOut}=useContext(AuthContext)
+    const {state,getNotes}=useContext(NoteContext)
+    useEffect(()=>{
+        getNotes();
+    },[])
+    console.log(state);
+    
     return(
         <SafeAreaView forceInset={{top:"always"}}>
             <View style={styles.container}>

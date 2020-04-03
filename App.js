@@ -10,6 +10,7 @@ import CreateNoteScreen from './src/screens/CreateNoteScreen'
 import {Provider as AuthProvider} from './src/context/AuthContext'
 import {setNavigator} from './src/navigationRef'
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
+import { Provider as NoteProvider } from './src/context/NoteContext';
 const SwitchNavigator=createSwitchNavigator({
   LoadingScreen:AuthLoadingScreen,
   loginFlow:createStackNavigator({
@@ -28,8 +29,10 @@ const SwitchNavigator=createSwitchNavigator({
 const App= createAppContainer(SwitchNavigator)
 export default ()=>{
   return <AuthProvider>
+    <NoteProvider>
     <App ref={(navigator)=>{
       setNavigator(navigator)
     }} />
+    </NoteProvider>
   </AuthProvider>
 }
