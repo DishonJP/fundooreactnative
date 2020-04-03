@@ -4,12 +4,14 @@ import { Context as AuthContext } from "../context/AuthContext"
 import {AntDesign} from 'react-native-vector-icons'
 import {SafeAreaView} from 'react-navigation'
 import Appbar from "../Components/Appbar"
+import Footer from "../Components/Footer"
 const HomeScreen=({navigation})=>{
     const {signOut}=useContext(AuthContext)
     return(
         <SafeAreaView forceInset={{top:"always"}}>
             <View style={styles.container}>
             <Appbar/>
+            <Footer/>
             </View>
         </SafeAreaView>
     )
