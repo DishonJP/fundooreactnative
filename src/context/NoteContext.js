@@ -3,6 +3,7 @@ import fundoo from '../api/fundoo'
 import noteApi from '../api/constants/noteApiConstants'
 import AsyncStorage from '@react-native-community/async-storage'
 import createDataContext from './createDataContext'
+import { navigate } from '../navigationRef'
 const noteReducer=(state,action)=>{
     switch (action.type) {
         case "getNote":
@@ -10,7 +11,11 @@ const noteReducer=(state,action)=>{
                 ...state,
                 notes:action.payload
             }
-    
+        case "addNote":
+            return{
+                ...state,
+                notes:action.payload
+            }    
         default:
             return state
     }
@@ -29,6 +34,19 @@ const getNotes=dispatch=>async ()=>{
         console.log(error);
     }
 }
-export const {Context,Provider}=createDataContext(noteReducer,{getNotes},{
+const addNote=dispatch=>async ()=>{
+    try {
+        const response=await fundoo.post(noteApi.createNote,{title:"gods",description:'thunder'},{
+            headers:{
+                Authorization:JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({type:"addNote",payload:response.data.data.data})
+        navigate('Home')
+    } catch (error) {
+        
+    }
+}
+export const {Context,Provider}=createDataContext(noteReducer,{getNotes,addNote},{
     notes:""
 })
