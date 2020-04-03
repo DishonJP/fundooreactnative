@@ -8,7 +8,7 @@ const HomeScreen=({navigation})=>{
     const {signOut}=useContext(AuthContext)
     return(
         <SafeAreaView forceInset={{top:"always"}}>
-            <View>
+            <View style={styles.container}>
             <Appbar/>
             </View>
         </SafeAreaView>
@@ -21,7 +21,8 @@ HomeScreen.navigationOptions=()=>{
 }
 const styles=StyleSheet.create({
     container:{
-        flex:1,
+        height:"100%",
+        width:"100%",
         backgroundColor:"#fff"
     }
 })
