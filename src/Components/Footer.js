@@ -39,7 +39,9 @@ const styles=StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         flex:1,
-        justifyContent:"space-between"
+        justifyContent:"space-between",
+        backgroundColor:"#fff",
+        zIndex:9
     },
     icon:{
         marginHorizontal:20

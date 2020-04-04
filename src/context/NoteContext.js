@@ -12,10 +12,6 @@ const noteReducer=(state,action)=>{
                 notes:action.payload
             }
         case "addNote":
-            return{
-                ...state,
-                notes:action.payload
-            }    
         default:
             return state
     }
@@ -34,16 +30,22 @@ const getNotes=dispatch=>async ()=>{
         console.log(error);
     }
 }
-const addNote=dispatch=>async ()=>{
+const addNote=dispatch=>async (field)=>{
     try {
-        const response=await fundoo.post(noteApi.createNote,{title:"gods",description:'thunder'},{
+        const response=await fundoo.post(noteApi.createNote,field,{
             headers:{
                 Authorization:JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        dispatch({type:"addNote",payload:response.data.data.data})
+        const responseNote=await fundoo.get(noteApi.getNotes,{
+            headers:{
+                Authorization:JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({type:"getNote",payload:responseNote.data.data.data})
         navigate('Home')
     } catch (error) {
+        console.log(error);
         
     }
 }

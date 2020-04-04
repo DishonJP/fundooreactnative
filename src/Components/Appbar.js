@@ -88,8 +88,7 @@ const styles=StyleSheet.create({
         borderRadius:10,
         borderColor:'lightgray',
         borderWidth:1,
-        position:"absolute",
-        top:0
+        zIndex:9
     },
     searchBox:{
         flexDirection:'row',

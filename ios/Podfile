@@ -68,6 +68,8 @@ target 'fundooreactnative' do
 
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
   target 'fundooreactnativeTests' do
     inherit! :complete
     # Pods for testing
