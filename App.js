@@ -22,7 +22,6 @@ const SwitchNavigator=createSwitchNavigator({
       Home:HomeScreen,
       CreateNote:CreateNoteScreen
     }),
-    Home:HomeScreen,
     Archive:ArchiveScreen
   })
 })

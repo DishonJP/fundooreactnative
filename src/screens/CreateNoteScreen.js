@@ -1,6 +1,7 @@
 import React,{useState,useContext} from "react"
 import {TextInput,FlatList} from 'react-native'
 import {View,Text,StyleSheet,TouchableOpacity,ScrollView} from "react-native"
+import {Overlay} from 'react-native-elements'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -8,41 +9,30 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import {Context as NoteContext} from '../context/NoteContext'
 const CreateNoteScreen=()=>{
-    const color = [
-        '#fff',
-        '#f28b82',
-        '#fbbc04',
-        '#fff475',
-        '#ccff90',
-        '#a7ffeb',
-        '#cbf0f8',
-        '#aecbfa',
-        '#d7aefb',
-        '#fdcfe8',
-        '#e6c9a8',
-        '#e8eaed',
+    const colors = [
+        {id:"1",color:"#fff"},
+        {id:"2",color:'#f28b82'},
+        {id:"3",color:'#fbbc04'},
+        {id:"4",color:'#fff475'},
+        {id:"5",color:'#ccff90'},
+        {id:"6",color:'#a7ffeb'},
+        {id:"7",color:'#cbf0f8'},
+        {id:"8",color:'#aecbfa'},
+        {id:"9",color:'#d7aefb'},
+        {id:"10",color:'#fdcfe8'},
+        {id:"11",color:'#e6c9a8'},
+        {id:"12",color:'#e8eaed'},
       ];
     const {state,addNote}=useContext(NoteContext)
-    console.log(state);
-    
     const [moremenu,setMoreMenu]=useState(false)
-    let colorObj=color.map((el,index)=>{
-        return(
-            <TouchableOpacity>
-            <View 
-                key={index}
-                style={{
-                height:35,
-                width:35,
-                borderRadius:35/2,
-                backgroundColor:el,
-                margin:5,
-                borderWidth:1,
-                borderColor:"lightgray"
-            }}/>
-            </TouchableOpacity>
-        )
-    })
+    const [title,setTitle]=useState("");
+    const [description,setDescription]=useState("");
+    const [isPinned,setPin]=useState(false)
+    const [isDeleted,setDelete]=useState(false)
+    const [isArchived,setArchive]=useState(false)
+    const [reminder,setRemain]=useState([])
+    const [color,setColor]=useState("#fff")
+    const [Collaborators,setCollab]=useState([])
     return(
         <View style={styles.container}>
             <View style={styles.header}>
@@ -53,7 +43,20 @@ const CreateNoteScreen=()=>{
                 </TouchableOpacity>
                 <View style={styles.headerIcons}>
                     <TouchableOpacity>
+                        {isPinned?
+                        <TouchableOpacity onPress={()=>{
+                            setPin(!isPinned)
+                        }}>
+                    <MaterialCommunityIcons name="pin" size={25} />
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                    onPress={()=>{
+                        setPin(!isPinned)
+                    }}>
                     <MaterialCommunityIcons name="pin-outline" size={25} />
+                    </TouchableOpacity>
+                    }
                     </TouchableOpacity>
                     <TouchableOpacity>
                     <MaterialCommunityIcons style={{
@@ -88,8 +91,16 @@ const CreateNoteScreen=()=>{
                 }} name="dots-vertical" size={25}/>
                 </TouchableOpacity>
             </View>
-            {moremenu?<View
-                style={styles.moremenu}
+            <Overlay
+                isVisible={moremenu}
+                containerStyle={{
+                        backgroundColor:"#fff",
+                        opacity:.1
+                    }}
+                overlayStyle={styles.moremenu}
+                onBackdropPress={()=>{
+                    setMoreMenu(!moremenu)
+                }}
             >
                 <View style={styles.View}>
                     <AntDesign style={styles.moreIcon} name="delete" size={25}/>
@@ -113,15 +124,35 @@ const CreateNoteScreen=()=>{
                     <MaterialIcons style={styles.moreIcon} name="label-outline" size={25}/>
                     <Text>Labels</Text>
                 </View>
-                <ScrollView >
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={colors}
+                    keyExtractor={item=>item.id}
+                    renderItem={({item})=>{
+                           return <TouchableOpacity>
+                                <View 
+                                    style={{
+                                    height:35,
+                                    width:35,
+                                    borderRadius:35/2,
+                                    backgroundColor:item.color,
+                                    margin:5,
+                                    borderWidth:1,
+                                    borderColor:"lightgray"
+                            }}/>
+                            </TouchableOpacity>
+                    }}
+                />
+                {/* <ScrollView >
                 <View style={{
                     flexDirection:"row",
                     marginLeft:10
                 }}>
                 {colorObj}
                 </View>
-                </ScrollView>
-            </View>:null}
+                </ScrollView> */}
+            </Overlay>
         </View>
     )
 }
@@ -171,7 +202,7 @@ const styles=StyleSheet.create({
     },
     moremenu:{
         width:"100%",
-        height:300,
+        height:320,
         position:"absolute",
         bottom:51,
         backgroundColor:"#fff",

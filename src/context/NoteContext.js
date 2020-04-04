@@ -48,5 +48,5 @@ const addNote=dispatch=>async ()=>{
     }
 }
 export const {Context,Provider}=createDataContext(noteReducer,{getNotes,addNote},{
-    notes:""
+    notes:null
 })
