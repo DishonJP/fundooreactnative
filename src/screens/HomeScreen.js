@@ -3,8 +3,8 @@ import {View,Text,StyleSheet,ScrollView} from "react-native"
 import { Context as AuthContext } from "../context/AuthContext"
 import {Context as NoteContext } from '../context/NoteContext'
 import {SafeAreaView} from 'react-navigation'
-import Appbar from "../Components/Appbar"
-import Footer from "../Components/Footer"
+import Appbar from "../components/Appbar"
+import Footer from "../components/Footer"
 import { Card } from "react-native-elements"
 const HomeScreen=({navigation})=>{
     const {state,getNotes}=useContext(NoteContext)
@@ -24,6 +24,7 @@ const HomeScreen=({navigation})=>{
             width:180,
             marginRight:index%2===0?5:"auto",
             marginLeft:index%2===0?"auto":5,
+            borderRadius:10
         }} >
             <Text>{item.title}</Text>
     <Text>{item.description}</Text>

@@ -1,6 +1,6 @@
 import React,{createContext} from 'react'
 import fundoo from '../api/fundoo'
-import noteApi from '../api/constants/noteApiConstants'
+import noteApi from '../constants/noteApiConstants'
 import AsyncStorage from '@react-native-community/async-storage'
 import createDataContext from './createDataContext'
 import { navigate } from '../navigationRef'

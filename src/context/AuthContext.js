@@ -1,6 +1,6 @@
 import createDataContext from "./createDataContext";
 import fundooApi from '../api/fundoo'
-import userApi from "../api/userApiConstants";
+import userApi from "../constants/userApiConstants";
 import AsyncStorage from "@react-native-community/async-storage"
 import { navigate } from "../navigationRef";
 const authReducer=(state,action)=>{

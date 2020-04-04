@@ -1,6 +1,6 @@
 import React,{useState,useContext} from "react"
 import {Context as NoteContext} from '../context/NoteContext'
-import CreateEdit from "../Components/CreateEdit"
+import CreateEdit from "../components/CreateEdit"
 const CreateNoteScreen=()=>{
     const {state,addNote}=useContext(NoteContext)
     const [title,setTitle]=useState("");
