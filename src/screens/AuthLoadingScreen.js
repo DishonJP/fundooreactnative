@@ -1,5 +1,5 @@
 import React,{useContext,useEffect} from 'react'
-import { Context as AuthContext} from '../context/AuthContext'
+import { Context as AuthContext} from '../contexts/UserContext'
 
 const AuthLoadingScreen = ()=>{
     const {localSignIn}=useContext(AuthContext);
