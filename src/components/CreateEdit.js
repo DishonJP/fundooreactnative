@@ -48,7 +48,7 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
             backgroundColor: color
         }}>
             <View style={{
-                height: 50,
+                height: 60,
                 width: "100%",
                 position: "absolute",
                 top: 0,
