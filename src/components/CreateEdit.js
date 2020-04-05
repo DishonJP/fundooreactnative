@@ -188,10 +188,15 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                     <MaterialIcons style={styles.moreIcon} name="person-add" size={25} />
                     <Text>Collaborator</Text>
                 </View>
-                <View style={styles.View}>
-                    <MaterialIcons style={styles.moreIcon} name="label-outline" size={25} />
-                    <Text>Labels</Text>
-                </View>
+                <TouchableOpacity onPress={() => {
+                    setMoreMenu(!moremenu)
+                    navigation.navigate('LabelNote')
+                }}>
+                    <View style={styles.View}>
+                        <MaterialIcons style={styles.moreIcon} name="label-outline" size={25} />
+                        <Text>Labels</Text>
+                    </View>
+                </TouchableOpacity>
                 <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}

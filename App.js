@@ -11,6 +11,7 @@ import { Provider as UserProvider } from './src/contexts/UserContext'
 import { setNavigator } from './src/navigationRef'
 import AuthLoadingScreen from './src/screens/AuthLoadingScreen';
 import { Provider as RootProvider } from './src/contexts/RootContext'
+import LabelScreen from './src/screens/LabelScreen';
 const SwitchNavigator = createSwitchNavigator({
   LoadingScreen: AuthLoadingScreen,
   loginFlow: createStackNavigator({
@@ -20,7 +21,8 @@ const SwitchNavigator = createSwitchNavigator({
   DrawerFlow: createDrawerNavigator({
     NoteFlow: createStackNavigator({
       Home: HomeScreen,
-      CreateNote: CreateNoteScreen
+      CreateNote: CreateNoteScreen,
+      LabelNote: LabelScreen
     }),
     Archive: ArchiveScreen
   })

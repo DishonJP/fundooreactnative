@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { View, Text, StyleSheet, ScrollView } from "react-native"
 import { Context as AuthContext } from "../contexts/UserContext"
 import { Context as NoteContext } from '../contexts/RootContext'
@@ -7,11 +7,13 @@ import Appbar from "../components/Appbar"
 import Footer from "../components/Footer"
 const HomeScreen = ({ navigation }) => {
     const { state, getNotes } = useContext(NoteContext)
-    console.log(state);
-
+    const [gridList, setGridList] = useState(false)
     useEffect(() => {
         getNotes();
     }, [])
+    const ridList = (data) => {
+        setGridList(data)
+    }
     if (state.notes === null) {
         return null
     }
@@ -20,14 +22,13 @@ const HomeScreen = ({ navigation }) => {
             key={item.id}
             style={{
                 backgroundColor: item.color,
-                width: 180,
-                marginRight: index % 2 === 0 ? 5 : "auto",
-                marginLeft: index % 2 === 0 ? "auto" : 5,
+                width: gridList ? "96%" : 180,
+                // marginRight: index % 2 === 0 ? 5 : "auto",
+                // marginLeft: index % 2 === 0 ? "auto" : 5,
                 borderRadius: 10,
-                minHeight: 100,
                 padding: 10,
                 elevation: 2,
-                marginVertical: 5,
+                margin: 7,
             }} >
             <Text>{item.title}</Text>
             <Text>{item.description}</Text>
@@ -38,7 +39,8 @@ const HomeScreen = ({ navigation }) => {
                     borderColor: "lightgray",
                     borderRadius: 30,
                     backgroundColor: item.color,
-                    width: item.reminder[0].length + 92
+                    width: item.reminder[0].length + 92,
+                    left: -5
                 }}>
                     <Text>{item.reminder[0].split('').filter((el, index) => {
                         return index < 21 && index > 3
@@ -50,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView forceInset={{ top: "always" }}>
             <View style={styles.container}>
                 <ScrollView>
-                    <Appbar />
+                    <Appbar gridList={ridList} />
                     <View style={styles.view}>
                         {allNotes}
                     </View>
