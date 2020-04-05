@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList } from "react-native"
 import { Overlay, Input, Button } from 'react-native-elements'
 import Feather from 'react-native-vector-icons/Feather'
@@ -7,7 +7,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import Moment from 'react-moment';
 const CreateEdit = ({ navigation, noteData, addNote }) => {
     const colors = [
         { id: "1", color: "#fff" },
@@ -34,12 +33,13 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
     const [color, setColor] = useState(noteData.color)
     const [collaborators, setCollab] = useState(noteData.collaborators)
     const [noteLabels, setLabel] = useState(noteData.noteLabels);
-    const [day, setDay] = useState("");
-    const [time, setTime] = useState("");
+    const [day, setDay] = useState(new Date());
+    const [time, setTime] = useState(new Date());
     const [datePicker, setDatePicker] = useState(false);
     const [timePicker, setTimePicker] = useState(false);
-    console.log(reminder);
-
+    let dateone = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10, 0, 0, 0)
+    let datetwo = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 10, 0, 0, 0)
+    let datethree = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 18, 0, 0, 0)
     return (
         <View style={{
             width: "100%",
@@ -60,7 +60,7 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 flexDirection: "row"
             }}>
                 <TouchableOpacity onPress={() => {
-                    const field = { title, description, color, isPinned }
+                    const field = { title, description, color, isPinned, reminder }
                     addNote(field)
                 }}>
                     <Feather style={{
@@ -113,6 +113,20 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                     value={description}
                     onChangeText={setDescription}
                     placeholder="Note" />
+                {reminder.toString().length !== 0 ? <TouchableOpacity onPress={() => {
+                    setRemMenu(true)
+                }}>
+                    <View style={{
+                        padding: 5,
+                        borderWidth: 1,
+                        borderColor: "lightgray",
+                        borderRadius: 30,
+                        backgroundColor: color,
+                        width: reminder.toString().length + 92
+                    }}>
+                        <Text>{reminder.toLocaleDateString()} {reminder.toLocaleTimeString()}</Text>
+                    </View>
+                </TouchableOpacity> : null}
             </View>
             <View style={{
                 height: 50,
@@ -203,19 +217,23 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
             </Overlay>
             <Overlay
                 overlayStyle={{
-                    width: 300
+                    width: 300,
+                    height: 300,
+                    zIndex: 0
                 }}
                 isVisible={remmenu}
                 onBackdropPress={() => {
                     setRemMenu(!remmenu)
                 }}
             >
+                <Text>Add reminder</Text>
                 <TouchableOpacity onPress={() => {
                     setDatePicker(true)
+
                 }}>
                     <Input
                         disabled
-                        value={JSON.stringify(day)}
+                        value={day.toLocaleDateString()}
                         rightIcon={
                             <AntDesign name="calendar" size={20} />
                         }
@@ -226,35 +244,78 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 }}>
                     <Input
                         disabled
-                        value={JSON.stringify(time)}
+                        value={time.toLocaleTimeString()}
                         rightIcon={
                             <MaterialIcons name="access-time" size={20} />
                         }
                         placeholder="pick time" />
+                    <TouchableOpacity onPress={() => {
+                        setDay(dateone);
+                        setTime(dateone);
+                    }}>
+                        <View style={styles.dateView}>
+                            <Text>Today Morning</Text>
+                            <Text>{dateone.toLocaleTimeString()} AM</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        setDay(datetwo);
+                        setTime(datetwo);
+                    }}>
+                        <View style={styles.dateView}>
+                            <Text>tomorrow Morning</Text>
+                            <Text>{datetwo.toLocaleTimeString()} AM</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        setDay(datethree);
+                        setTime(datethree);
+                    }}>
+                        <View style={styles.dateView}>
+                            <Text>Today evening</Text>
+                            <Text>{datethree.toLocaleTimeString()} PM</Text>
+                        </View>
+                    </TouchableOpacity>
                 </TouchableOpacity>
-                <Button title="Set Reminder" />
+                <View style={styles.buttonView}>
+                    <Button type="clear" title="Cancel" onPress={() => {
+                        setRemain([])
+                        setRemMenu(false)
+                    }} />
+                    <Button
+                        onPress={() => {
+                            setRemain(day)
+                            setRemMenu(false)
+                        }}
+                        containerStyle={styles.saveButton} title="Save" buttonStyle={{
+                            backgroundColor: "dodgerblue"
+                        }} />
+                </View>
             </Overlay>
             <DateTimePickerModal
                 minimumDate={new Date()}
                 isVisible={datePicker}
-                mode="date"
+                mode="datetime"
                 onConfirm={(date) => {
                     setDay(date);
+                    setTime(date)
                     setDatePicker(false)
                 }}
                 onCancel={() => setDatePicker(false)}
             />
             <DateTimePickerModal
+                minimumDate={new Date().getTime()}
                 timeZoneOffsetInMinutes
                 isVisible={timePicker}
-                mode="time"
+                mode="datetime"
                 onConfirm={(time) => {
-                    setRemain([...reminder, time])
                     setTime(time);
+                    setDay(time);
                     setTimePicker(false)
                 }}
                 onCancel={() => setTimePicker(false)}
             />
+
         </View>
     )
 };
@@ -276,6 +337,20 @@ const styles = StyleSheet.create({
     moreIcon: {
         marginLeft: 15,
         marginRight: 30
+    },
+    dateView: {
+        height: 40,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: 10
+    },
+    buttonView: {
+        flexDirection: "row",
+        justifyContent: "flex-end"
+    },
+    saveButton: {
+        width: 80,
+        marginHorizontal: 10
     }
 });
 export default CreateEdit

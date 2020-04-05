@@ -28,11 +28,22 @@ const HomeScreen = ({ navigation }) => {
                 padding: 10,
                 elevation: 2,
                 marginVertical: 5,
-                // borderWidth: item.color == "#fff" ? 1 : null,
-                // borderColor: item.color
             }} >
             <Text>{item.title}</Text>
             <Text>{item.description}</Text>
+            {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
+                <View style={{
+                    padding: 5,
+                    borderWidth: 1,
+                    borderColor: "lightgray",
+                    borderRadius: 30,
+                    backgroundColor: item.color,
+                    width: item.reminder[0].length + 92
+                }}>
+                    <Text>{item.reminder[0].split('').filter((el, index) => {
+                        return index < 21 && index > 3
+                    })}</Text>
+                </View> : null}
         </View>
     })
     return (

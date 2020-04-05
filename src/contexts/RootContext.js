@@ -13,7 +13,7 @@ const noteReducer = (state, action) => {
             }
         case "addNote":
             return {
-                notes: [...notes, action.payload]
+                notes: [...state.notes, action.payload]
             }
         default:
             return state
@@ -40,12 +40,7 @@ const addNote = dispatch => async (field) => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        // const responseNote=await fundoo.get(noteApi.getNotes,{
-        //     headers:{
-        //         Authorization:JSON.parse(await AsyncStorage.getItem('token')).id
-        //     }
-        // })
-        dispatch({ type: "addNote", payload: responseNote.data.status.details })
+        dispatch({ type: "addNote", payload: response.data.status.details })
         navigate('Home')
     } catch (error) {
         console.log(error);
