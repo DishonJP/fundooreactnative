@@ -1,75 +1,116 @@
 import React, { useContext, useState } from 'react'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import { Context as RootContext } from '../contexts/RootContext'
-import { CheckBox } from 'react-native-elements'
+import AsyncStorage from '@react-native-community/async-storage'
 const LabelScreen = ({ navigation }) => {
-    const { state } = useContext(RootContext)
-    const [checkBox, setCheckBox] = useState(false)
+    const { state, addLabel } = useContext(RootContext)
     const [search, setSearch] = useState("")
     let addlabel = [];
     for (let i = 0; i < state.label.length; i++) {
         addlabel.push({ label: state.label[i], check: false })
     }
-    const [label, setLabel] = useState(addlabel)
-    console.log(label)
+    const [label, setLabel] = useState(addlabel);
+    let labelObj = label.find(el => {
+        return el.label.label.toLocaleLowerCase() === search.toLocaleLowerCase()
+    })
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity>
-                    <Feather
-                        onPress={() => {
-                            navigation.navigate('CreateNote')
-                        }}
-                        style={styles.icon} name="arrow-left" size={25} />
-                </TouchableOpacity>
-                <TextInput
-                    style={styles.text}
-                    placeholder="Enter label name"
-                    value={search}
-                    onChangeText={setSearch}
+        <ScrollView style={{
+            backgroundColor: "#fff"
+        }}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('CreateNote', { label: label })
+                    }}>
+                        <Feather
+                            style={styles.icon} name="arrow-left" size={25} />
+                    </TouchableOpacity>
+                    <TextInput
+                        style={styles.inputtext}
+                        placeholder="Enter label name"
+                        value={search}
+                        onChangeText={setSearch}
+                    />
+                </View>
+                {labelObj || search === "" ?
+                    null : <TouchableOpacity onPress={async () => {
+                        addLabel({
+                            label: search, isDeleted: false,
+                            userId: JSON.parse(await AsyncStorage.getItem('token')).userId
+                        })
+                        // let labelArray = []
+                        // const data = { label: { label: search, id: Math.floor(Math.random() * 10000).toLocaleString() }, check: true }
+                        // labelArray.push(data);
+                        // label.forEach(element => {
+                        //     labelArray.push(element)
+                        // });
+                        // setLabel(labelArray)
+                    }}>
+                        <View style={styles.create}>
+                            <Feather style={styles.icon} name="plus" size={25} color="dodgerblue" />
+                            <Text style={{
+                                fontSize: 18
+                            }}>Create "{search}"</Text>
+                        </View>
+                    </TouchableOpacity>}
+                <FlatList
+                    data={label}
+                    keyExtractor={item => item.label.id}
+                    renderItem={({ item }) => {
+                        if (item.label.label.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())) {
+                            return (
+                                <TouchableOpacity onPress={() => {
+                                    let labelarray = [];
+                                    if (item.check === false) {
+                                        let labels = label.filter((el) => {
+                                            return el.label.id === item.label.id
+                                        })
+                                        const data = { label: labels[0].label, check: true }
+                                        for (let i = 0; i < label.length; i++) {
+                                            if (label[i].label.id === labels[0].label.id) {
+                                                labelarray.push(data)
+                                            } else {
+                                                labelarray.push(label[i])
+                                            }
+                                        }
+                                        setLabel(labelarray)
+                                    } else {
+                                        let labelarray = [];
+                                        let labels = label.filter((el) => {
+                                            return el.label.id === item.label.id
+                                        })
+                                        const data = { label: labels[0].label, check: false }
+                                        for (let i = 0; i < label.length; i++) {
+                                            if (label[i].label.id === labels[0].label.id) {
+                                                labelarray.push(data)
+                                            } else {
+                                                labelarray.push(label[i])
+                                            }
+                                        }
+                                        setLabel(labelarray)
+                                    }
+                                }}>
+                                    <View style={styles.labelContainer}>
+                                        <MaterialIcons style={styles.icon} name="label-outline" size={25} />
+                                        <Text style={{
+                                            justifyContent: "flex-start",
+                                            width: "auto",
+                                            flexDirection: "row",
+                                            flex: 1,
+                                            fontSize: 18
+                                        }}>{item.label.label}</Text>
+                                        {item.check ? <Feather style={styles.checkBox} name="check-square" size={25} /> :
+                                            <Feather style={styles.checkBox} name="square" size={25} />}
+                                    </View>
+                                </TouchableOpacity>
+                            );
+                        }
+                    }}
                 />
             </View>
-            <FlatList
-                data={label}
-                keyExtractor={item => item.label.id}
-                renderItem={({ item }) => {
-                    return (
-                        <TouchableOpacity onPress={() => {
-                            setCheckBox(!checkBox)
-                            if (checkBox) {
-                                let labels = label.filter((el) => {
-                                    return el.label.id === item.label.id
-                                })
-                                const data = { label: labels[0].label, check: true }
-                                setLabel([...label, data])
-                            } else {
-                                let labels = label.filter((el) => {
-                                    return el.label.id === item.label.id
-                                })
-                                const data = { label: labels[0].label, check: false }
-                                setLabel({ ...label, data })
-                            }
-                        }}>
-                            <View style={styles.labelContainer}>
-                                <MaterialIcons style={styles.icon} name="label-outline" size={25} />
-                                <Text style={{
-                                    justifyContent: "flex-start",
-                                    width: "68%"
-                                }}>{item.label.label}</Text>
-                                <CheckBox
-                                    onIconPress={() => {
-                                        setCheckBox(!checkBox)
-
-                                    }}
-                                    center containerStyle={styles.checkBox} checked={item.check} />
-                            </View>
-                        </TouchableOpacity>
-                    );
-                }}
-            />
-        </View>
+        </ScrollView>
     )
 }
 LabelScreen.navigationOptions = () => {
@@ -102,11 +143,16 @@ const styles = StyleSheet.create({
         marginRight: 30
     },
     checkBox: {
-        alignSelf: "flex-start"
+        marginRight: 15
     },
-    text: {
+    inputtext: {
         width: "80%",
         fontSize: 20
+    },
+    create: {
+        flexDirection: "row",
+        alignItems: "center",
+        height: 50
     }
 })
 export default LabelScreen

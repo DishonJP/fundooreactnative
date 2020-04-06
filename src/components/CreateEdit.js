@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList } from "react-native"
 import { Overlay, Input, Button } from 'react-native-elements'
 import Feather from 'react-native-vector-icons/Feather'
@@ -8,6 +8,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 const CreateEdit = ({ navigation, noteData, addNote }) => {
+
     const colors = [
         { id: "1", color: "#fff" },
         { id: "2", color: '#f28b82' },
@@ -33,6 +34,7 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
     const [color, setColor] = useState(noteData.color)
     const [collaborators, setCollab] = useState(noteData.collaborators)
     const [noteLabels, setLabel] = useState(noteData.noteLabels);
+    const [labelIdList, setLabelId] = useState(noteData.labelIdList)
     const [day, setDay] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [datePicker, setDatePicker] = useState(false);
@@ -40,6 +42,41 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
     let dateone = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10, 0, 0, 0)
     let datetwo = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 10, 0, 0, 0)
     let datethree = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 18, 0, 0, 0)
+    console.log(noteLabels);
+
+    useEffect(() => {
+        if (navigation.state.params !== undefined) {
+            const labelArray = navigation.state.params.label;
+            let array = [];
+            let idArray = [];
+            labelArray.forEach(element => {
+                if (element.check) {
+                    array.push(element.label.label)
+                    idArray.push(element.label.id);
+                }
+            });
+            setLabel(array)
+            setLabelId(JSON.stringify(idArray))
+        }
+    }, [navigation])
+    let labelObj = noteLabels.map(el => {
+        return (
+            <TouchableOpacity>
+                <View style={{
+                    padding: 5,
+                    backgroundColor: color,
+                    borderWidth: 1,
+                    borderColor: "lightgray",
+                    borderRadius: 20,
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    marginRight: 5
+                }}>
+                    <Text>{el}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    })
     return (
         <View style={{
             width: "100%",
@@ -60,8 +97,15 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 flexDirection: "row"
             }}>
                 <TouchableOpacity onPress={() => {
-                    const field = { title, description, color, isPinned, reminder }
-                    addNote(field)
+                    // const formData={title,description,color,isPinned,reminder}
+                    var formData = new FormData();
+                    formData.append("title", title)
+                    formData.append("description", description)
+                    formData.append("color", color)
+                    formData.append("isPinned", isPinned)
+                    formData.append("reminder", reminder.toString())
+                    formData.append("labelIdList", labelIdList)
+                    addNote(formData)
                 }}>
                     <Feather style={{
                         marginLeft: 15
@@ -127,6 +171,9 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                         <Text>{reminder.toLocaleDateString()} {reminder.toLocaleTimeString()}</Text>
                     </View>
                 </TouchableOpacity> : null}
+                <View style={styles.label}>
+                    {labelObj}
+                </View>
             </View>
             <View style={{
                 height: 50,
@@ -356,6 +403,10 @@ const styles = StyleSheet.create({
     saveButton: {
         width: 80,
         marginHorizontal: 10
+    },
+    label: {
+        flexDirection: "row",
+        flexWrap: "wrap",
     }
 });
 export default CreateEdit

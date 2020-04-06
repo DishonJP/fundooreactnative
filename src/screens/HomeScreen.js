@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView } from "react-native"
+import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native"
 import { Context as AuthContext } from "../contexts/UserContext"
 import { Context as NoteContext } from '../contexts/RootContext'
 import { SafeAreaView } from 'react-navigation'
@@ -17,7 +17,15 @@ const HomeScreen = ({ navigation }) => {
     if (state.notes === null) {
         return null
     }
+    console.log(state);
     let allNotes = state.notes.map((item, index) => {
+        console.log(item);
+        let labelObj = item.noteLabels.map(item => {
+            return <View key={item.id}
+                style={styles.labelNote}>
+                <Text>{item.label}</Text>
+            </View>
+        })
         return <View
             key={item.id}
             style={{
@@ -46,6 +54,9 @@ const HomeScreen = ({ navigation }) => {
                         return index < 21 && index > 3
                     })}</Text>
                 </View> : null}
+            <View style={styles.label}>
+                {labelObj}
+            </View>
         </View>
     })
     return (
@@ -78,6 +89,19 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         flex: 1,
         marginBottom: 51
+    },
+    label: {
+        flexDirection: "row",
+        flexWrap: "wrap"
+    },
+    labelNote: {
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: "lightgray",
+        padding: 5,
+        marginRight: 5,
+        marginVertical: 5,
+        left: -5
     }
 })
 export default HomeScreen;

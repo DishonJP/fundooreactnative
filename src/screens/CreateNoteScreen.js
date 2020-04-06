@@ -8,10 +8,12 @@ const CreateNoteScreen = ({ navigation }) => {
     const [isPinned, setPin] = useState(false)
     const [isDeleted, setDelete] = useState(false)
     const [isArchived, setArchive] = useState(false)
-    const [reminder, setRemain] = useState([])
+    const [reminder, setRemain] = useState("")
     const [color, setColor] = useState("#fff")
     const [collaborators, setCollab] = useState([])
     const [noteLabels, setLabel] = useState([])
+    console.log(navigation);
+
     return (
         <CreateEdit
             navigation={navigation}

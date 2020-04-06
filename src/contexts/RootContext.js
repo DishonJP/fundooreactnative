@@ -21,6 +21,11 @@ const noteReducer = (state, action) => {
                 ...state,
                 label: action.payload
             }
+        case "addLabel":
+            return {
+                ...state,
+                label: [...state.label, action.payload]
+            }
         default:
             return state
     }
@@ -47,11 +52,15 @@ const getNotes = dispatch => async () => {
 }
 const addNote = dispatch => async (field) => {
     try {
+        console.log(field);
+
         const response = await fundoo.post(noteApi.createNote, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
+        console.log(response);
+
         dispatch({ type: "addNote", payload: response.data.status.details })
         navigate('Home')
     } catch (error) {
@@ -59,6 +68,21 @@ const addNote = dispatch => async (field) => {
 
     }
 }
-export const { Context, Provider } = createDataContext(noteReducer, { getNotes, addNote }, {
+const addLabel = dispatch => async (field) => {
+    try {
+        console.log(field);
+
+        const response = await fundoo.post(noteApi.labelNote, field, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "addLabel", payload: response.data })
+    } catch (error) {
+        console.log(error);
+
+    }
+}
+export const { Context, Provider } = createDataContext(noteReducer, { getNotes, addNote, addLabel }, {
     notes: null
 })
