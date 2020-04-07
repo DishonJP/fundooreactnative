@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { Context as AuthContext } from '../contexts/UserContext'
 const Appbar = ({ navigation, gridList }) => {
     const { state, signOut } = useContext(AuthContext);
-    const [listGrid, setListGrid] = useState(false)
+    const [listGrid, setListGrid] = useState(true)
     const [menu, setMenu] = useState(false)
     if (state.token === null) {
         return null

@@ -7,8 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-const CreateEdit = ({ navigation, noteData, addNote }) => {
-
+const CreateEdit = ({ navigation, noteData, addNote, id }) => {
     const colors = [
         { id: "1", color: "#fff" },
         { id: "2", color: '#f28b82' },
@@ -27,7 +26,7 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
     const [moremenu, setMoreMenu] = useState(false)
     const [title, setTitle] = useState(noteData.title);
     const [description, setDescription] = useState(noteData.description);
-    const [isPinned, setPin] = useState(noteData.isPinned)
+    const [isPined, setPin] = useState(noteData.isPined)
     const [isDeleted, setDelete] = useState(noteData.isDeleted)
     const [isArchived, setArchive] = useState(noteData.isArchived)
     const [reminder, setRemain] = useState(noteData.reminder)
@@ -39,24 +38,27 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
     const [time, setTime] = useState(new Date());
     const [datePicker, setDatePicker] = useState(false);
     const [timePicker, setTimePicker] = useState(false);
+    const [refId, setId] = useState(id)
     let dateone = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10, 0, 0, 0)
     let datetwo = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 10, 0, 0, 0)
     let datethree = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 18, 0, 0, 0)
-    console.log(noteLabels);
-
     useEffect(() => {
         if (navigation.state.params !== undefined) {
-            const labelArray = navigation.state.params.label;
-            let array = [];
-            let idArray = [];
-            labelArray.forEach(element => {
-                if (element.check) {
-                    array.push(element.label.label)
-                    idArray.push(element.label.id);
-                }
-            });
-            setLabel(array)
-            setLabelId(JSON.stringify(idArray))
+            if (navigation.state.params.label !== undefined) {
+                const labelArray = navigation.state.params.label;
+                let array = [];
+                let idArray = [];
+                labelArray.forEach(element => {
+                    if (element.check) {
+                        array.push(element.label)
+                        idArray.push(element.label.id);
+                    }
+                });
+                console.log(array);
+
+                setLabel(array)
+                setLabelId(JSON.stringify(idArray))
+            }
         }
     }, [navigation])
     let labelObj = noteLabels.map(el => {
@@ -72,7 +74,7 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                     alignItems: "flex-start",
                     marginRight: 5
                 }}>
-                    <Text>{el}</Text>
+                    <Text>{el.label}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -97,14 +99,15 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 flexDirection: "row"
             }}>
                 <TouchableOpacity onPress={() => {
-                    // const formData={title,description,color,isPinned,reminder}
-                    var formData = new FormData();
+                    formData = new FormData();
                     formData.append("title", title)
                     formData.append("description", description)
                     formData.append("color", color)
-                    formData.append("isPinned", isPinned)
+                    formData.append("isPined", isPined)
                     formData.append("reminder", reminder.toString())
                     formData.append("labelIdList", labelIdList)
+                    formData.append("isArchived", isArchived)
+                    formData.append("isDeleted", isDeleted)
                     addNote(formData)
                 }}>
                     <Feather style={{
@@ -113,16 +116,16 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 </TouchableOpacity>
                 <View style={styles.headerIcons}>
                     <TouchableOpacity>
-                        {isPinned ?
+                        {isPined ?
                             <TouchableOpacity onPress={() => {
-                                setPin(!isPinned)
+                                setPin(!isPined)
                             }}>
                                 <MaterialCommunityIcons name="pin" size={25} />
                             </TouchableOpacity>
                             :
                             <TouchableOpacity
                                 onPress={() => {
-                                    setPin(!isPinned)
+                                    setPin(!isPined)
                                 }}>
                                 <MaterialCommunityIcons name="pin-outline" size={25} />
                             </TouchableOpacity>
@@ -135,7 +138,18 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                             marginHorizontal: 30
                         }} name="bell-plus-outline" size={25} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        const formData = new FormData();
+                        formData.append("title", title)
+                        formData.append("description", description)
+                        formData.append("color", color)
+                        formData.append("isPined", isPined)
+                        formData.append("reminder", reminder.toString())
+                        formData.append("labelIdList", labelIdList)
+                        formData.append("isArchived", true)
+                        formData.append("isDeleted", isDeleted)
+                        addNote(formData)
+                    }}>
                         <MaterialIcons style={{
                             marginRight: 15
                         }} name="archive" size={25} />
@@ -168,7 +182,11 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                         backgroundColor: color,
                         width: reminder.toString().length + 92
                     }}>
-                        <Text>{reminder.toLocaleDateString()} {reminder.toLocaleTimeString()}</Text>
+                        {refId == 1 ? <Text>{reminder.toLocaleDateString()} {reminder.toLocaleTimeString()}</Text> :
+                            <Text>{reminder.split('').filter((el, index) => {
+                                return index < 21 && index > 3
+                            })}</Text>
+                        }
                     </View>
                 </TouchableOpacity> : null}
                 <View style={styles.label}>
@@ -237,7 +255,7 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 </View>
                 <TouchableOpacity onPress={() => {
                     setMoreMenu(!moremenu)
-                    navigation.navigate('LabelNote')
+                    navigation.navigate('LabelNote', { noteLabels: noteLabels })
                 }}>
                     <View style={styles.View}>
                         <MaterialIcons style={styles.moreIcon} name="label-outline" size={25} />
@@ -331,11 +349,11 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 </TouchableOpacity>
                 <View style={styles.buttonView}>
                     <Button type="clear" title="Cancel" onPress={() => {
-                        setRemain([])
                         setRemMenu(false)
                     }} />
                     <Button
                         onPress={() => {
+                            setId("1")
                             setRemain(day)
                             setRemMenu(false)
                         }}
@@ -363,6 +381,8 @@ const CreateEdit = ({ navigation, noteData, addNote }) => {
                 onConfirm={(time) => {
                     setTime(time);
                     setDay(time);
+                    console.log(day);
+
                     setTimePicker(false)
                 }}
                 onCancel={() => setTimePicker(false)}
@@ -407,6 +427,7 @@ const styles = StyleSheet.create({
     label: {
         flexDirection: "row",
         flexWrap: "wrap",
+        marginTop: 10
     }
 });
 export default CreateEdit

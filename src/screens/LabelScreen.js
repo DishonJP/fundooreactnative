@@ -1,16 +1,34 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import { Context as RootContext } from '../contexts/RootContext'
 import AsyncStorage from '@react-native-community/async-storage'
 const LabelScreen = ({ navigation }) => {
+    console.log(navigation.state.params);
+
     const { state, addLabel } = useContext(RootContext)
     const [search, setSearch] = useState("")
     let addlabel = [];
+    let noteLabel = []
+    if (navigation.state.params !== undefined) {
+        noteLabel = navigation.state.params.noteLabels
+    }
     for (let i = 0; i < state.label.length; i++) {
+        console.log(noteLabel);
+        let count = 0
+        for (let j = 0; j < noteLabel.length; j++) {
+            if (noteLabel[j].id == state.label[i].id) {
+                addlabel.push({ label: state.label[i], check: true })
+                count++
+            }
+        }
+        if (count !== 0) {
+            continue;
+        }
         addlabel.push({ label: state.label[i], check: false })
     }
+
     const [label, setLabel] = useState(addlabel);
     let labelObj = label.find(el => {
         return el.label.label.toLocaleLowerCase() === search.toLocaleLowerCase()
