@@ -7,6 +7,8 @@ const noteApi = {
     labelNote: "/noteLabels",
     trashNote: "/notes/trashNotes",
     archive: "/notes/archiveNotes",
-    getLabel:"/noteLabels/getNoteLabelList"
+    getLabel: "/noteLabels/getNoteLabelList",
+    updateReminder: '/notes/addUpdateReminderNotes',
+    removeReminder: "/notes/removeReminderNotes",
 }
 export default noteApi

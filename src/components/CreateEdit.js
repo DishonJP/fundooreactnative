@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList } from "react-native"
 import { Overlay, Input, Button } from 'react-native-elements'
 import Feather from 'react-native-vector-icons/Feather'
@@ -7,7 +7,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Context as RootContext } from '../contexts/RootContext'
 const CreateEdit = ({ navigation, noteData, addNote, id }) => {
+    const { archiveNote, colorNote, pinNote, updateReminder, removeReminder, trashNote } = useContext(RootContext)
     const colors = [
         { id: "1", color: "#fff" },
         { id: "2", color: '#f28b82' },
@@ -42,6 +44,8 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
     let dateone = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10, 0, 0, 0)
     let datetwo = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 10, 0, 0, 0)
     let datethree = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 18, 0, 0, 0)
+    console.log(noteData, "hell");
+
     useEffect(() => {
         if (navigation.state.params !== undefined) {
             if (navigation.state.params.label !== undefined) {
@@ -99,15 +103,21 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                 flexDirection: "row"
             }}>
                 <TouchableOpacity onPress={() => {
-                    formData = new FormData();
-                    formData.append("title", title)
-                    formData.append("description", description)
-                    formData.append("color", color)
-                    formData.append("isPined", isPined)
-                    formData.append("reminder", reminder.toString())
-                    formData.append("labelIdList", labelIdList)
-                    formData.append("isArchived", isArchived)
-                    formData.append("isDeleted", isDeleted)
+                    let formData = new FormData();
+                    if (id == 2) {
+                        formData.append("title", title)
+                        formData.append("description", description)
+                        formData.append("noteId", noteData.id)
+                    } else {
+                        formData.append("title", title)
+                        formData.append("description", description)
+                        formData.append("color", color)
+                        formData.append("isPined", isPined)
+                        formData.append("reminder", reminder.toString())
+                        formData.append("labelIdList", labelIdList)
+                        formData.append("isArchived", isArchived)
+                        formData.append("isDeleted", isDeleted)
+                    }
                     addNote(formData)
                 }}>
                     <Feather style={{
@@ -118,6 +128,13 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                     <TouchableOpacity>
                         {isPined ?
                             <TouchableOpacity onPress={() => {
+                                if (id == 2) {
+                                    let formData = {
+                                        isPined: !isPined,
+                                        noteIdList: [noteData.id]
+                                    }
+                                    pinNote(formData)
+                                }
                                 setPin(!isPined)
                             }}>
                                 <MaterialCommunityIcons name="pin" size={25} />
@@ -125,6 +142,13 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                             :
                             <TouchableOpacity
                                 onPress={() => {
+                                    if (id == 2) {
+                                        let formData = {
+                                            isPined: !isPined,
+                                            noteIdList: [noteData.id]
+                                        }
+                                        pinNote(formData)
+                                    }
                                     setPin(!isPined)
                                 }}>
                                 <MaterialCommunityIcons name="pin-outline" size={25} />
@@ -139,16 +163,24 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                         }} name="bell-plus-outline" size={25} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        const formData = new FormData();
-                        formData.append("title", title)
-                        formData.append("description", description)
-                        formData.append("color", color)
-                        formData.append("isPined", isPined)
-                        formData.append("reminder", reminder.toString())
-                        formData.append("labelIdList", labelIdList)
-                        formData.append("isArchived", true)
-                        formData.append("isDeleted", isDeleted)
-                        addNote(formData)
+                        if (id == 2) {
+                            let formData = {
+                                isArchived: !isArchived,
+                                noteIdList: [noteData.id]
+                            }
+                            archiveNote(formData)
+                        } else {
+                            let formData = new FormData();
+                            formData.append("title", title)
+                            formData.append("description", description)
+                            formData.append("color", color)
+                            formData.append("isPined", isPined)
+                            formData.append("reminder", reminder.toString())
+                            formData.append("labelIdList", labelIdList)
+                            formData.append("isArchived", !isArchived)
+                            formData.append("isDeleted", isDeleted)
+                            addNote(formData)
+                        }
                     }}>
                         <MaterialIcons style={{
                             marginRight: 15
@@ -171,7 +203,7 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                     value={description}
                     onChangeText={setDescription}
                     placeholder="Note" />
-                {reminder.toString().length !== 0 ? <TouchableOpacity onPress={() => {
+                {reminder === undefined ? null : reminder.toString().length !== 0 ? <TouchableOpacity onPress={() => {
                     setRemMenu(true)
                 }}>
                     <View style={{
@@ -255,7 +287,7 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                 </View>
                 <TouchableOpacity onPress={() => {
                     setMoreMenu(!moremenu)
-                    navigation.navigate('LabelNote', { noteLabels: noteLabels })
+                    navigation.navigate('LabelNote', { noteLabels: noteLabels, id: id, noteId: noteData.id })
                 }}>
                     <View style={styles.View}>
                         <MaterialIcons style={styles.moreIcon} name="label-outline" size={25} />
@@ -269,6 +301,13 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                     keyExtractor={item => item.id}
                     renderItem={({ item }) => {
                         return <TouchableOpacity onPress={() => {
+                            if (id == 2) {
+                                let formData = {
+                                    color: item.color,
+                                    noteIdList: [noteData.id]
+                                }
+                                colorNote(formData)
+                            }
                             setColor(item.color)
                         }}>
                             <View
@@ -349,10 +388,24 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                 </TouchableOpacity>
                 <View style={styles.buttonView}>
                     <Button type="clear" title="Cancel" onPress={() => {
+                        if (id == 2) {
+                            let formData = {
+                                noteIdList: [noteData.id]
+                            }
+                            removeReminder(formData)
+                        }
+                        setRemain(undefined)
                         setRemMenu(false)
                     }} />
                     <Button
                         onPress={() => {
+                            if (id == 2) {
+                                let formData = {
+                                    noteIdList: [noteData.id],
+                                    reminder: day
+                                }
+                                updateReminder(formData)
+                            }
                             setId("1")
                             setRemain(day)
                             setRemMenu(false)

@@ -70,6 +70,8 @@ target 'fundooreactnative' do
 
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   target 'fundooreactnativeTests' do
     inherit! :complete
     # Pods for testing

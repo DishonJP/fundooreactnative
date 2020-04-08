@@ -8,7 +8,13 @@ import DrawerContent from './DrawerContent'
 import { Context as RootContext } from '../contexts/RootContext'
 const Drawer = ({ navigation }) => {
     const { state } = useContext(RootContext);
-    const [color, setColor] = useState(false)
+    const [color, setColor] = useState(null)
+    const changeColor = (index) => {
+        if (color === index) {
+            return "#feefc3";
+        }
+        return "#fff";
+    }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
@@ -43,9 +49,10 @@ const Drawer = ({ navigation }) => {
                 <FlatList
                     data={state.label}
                     keyExtractor={item => item.id}
-                    renderItem={({ item }) => {
+                    renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity onPress={() => {
+                                setColor(index)
                                 navigation.closeDrawer()
                                 navigation.navigate('Home', { name: item.label })
 
@@ -54,7 +61,7 @@ const Drawer = ({ navigation }) => {
                                     flexDirection: "row",
                                     alignItems: "center",
                                     height: 50,
-                                    //backgroundColor: color ? "#feefc3" : "#fff",
+                                    backgroundColor: changeColor(index),
                                     borderTopRightRadius: 50,
                                     borderBottomRightRadius: 50,
                                     marginRight: 10

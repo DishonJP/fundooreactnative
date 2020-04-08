@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 import com.swmansion.rnscreens.RNScreensPackage;

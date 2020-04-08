@@ -5,9 +5,9 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollVi
 import { Context as RootContext } from '../contexts/RootContext'
 import AsyncStorage from '@react-native-community/async-storage'
 const LabelScreen = ({ navigation }) => {
-    console.log(navigation.state.params);
+    console.log(navigation.state.params.noteId);
 
-    const { state, addLabel } = useContext(RootContext)
+    const { state, addLabel, updateLabel, removeLabel } = useContext(RootContext)
     const [search, setSearch] = useState("")
     let addlabel = [];
     let noteLabel = []
@@ -40,7 +40,11 @@ const LabelScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => {
-                        navigation.navigate('CreateNote', { label: label })
+                        if (navigation.state.params.id == 1) {
+                            navigation.navigate('CreateNote', { label: label })
+                        } else {
+                            navigation.navigate('EditNote', { label: label })
+                        }
                     }}>
                         <Feather
                             style={styles.icon} name="arrow-left" size={25} />
@@ -58,13 +62,6 @@ const LabelScreen = ({ navigation }) => {
                             label: search, isDeleted: false,
                             userId: JSON.parse(await AsyncStorage.getItem('token')).userId
                         })
-                        // let labelArray = []
-                        // const data = { label: { label: search, id: Math.floor(Math.random() * 10000).toLocaleString() }, check: true }
-                        // labelArray.push(data);
-                        // label.forEach(element => {
-                        //     labelArray.push(element)
-                        // });
-                        // setLabel(labelArray)
                     }}>
                         <View style={styles.create}>
                             <Feather style={styles.icon} name="plus" size={25} color="dodgerblue" />
@@ -80,8 +77,16 @@ const LabelScreen = ({ navigation }) => {
                         if (item.label.label.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())) {
                             return (
                                 <TouchableOpacity onPress={() => {
+
                                     let labelarray = [];
                                     if (item.check === false) {
+                                        if (2 == navigation.state.params.id) {
+                                            const field = {
+                                                userId: navigation.state.params.noteId,
+                                                id: item.label.id
+                                            }
+                                            updateLabel(field)
+                                        }
                                         let labels = label.filter((el) => {
                                             return el.label.id === item.label.id
                                         })
@@ -95,6 +100,13 @@ const LabelScreen = ({ navigation }) => {
                                         }
                                         setLabel(labelarray)
                                     } else {
+                                        if (2 == navigation.state.params.id) {
+                                            const field = {
+                                                userId: navigation.state.params.noteId,
+                                                id: item.label.id
+                                            }
+                                            removeLabel(field)
+                                        }
                                         let labelarray = [];
                                         let labels = label.filter((el) => {
                                             return el.label.id === item.label.id

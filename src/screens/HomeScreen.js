@@ -33,9 +33,10 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (item.isPined === false && item.isDeleted === false && item.isArchived === false) {
-            return <TouchableOpacity onPress={() => {
-                navigation.navigate('EditNote', { notes: item })
-            }}>
+            return <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate('EditNote', { notes: item })
+                }}>
                 <View
                     key={item.id}
                     style={{
@@ -83,44 +84,43 @@ const HomeScreen = ({ navigation }) => {
         })
         if (item.isPined === true && item.isDeleted === false && item.isArchived === false) {
             pinCount++
-            return <TouchableOpacity>
-                <View
-                    key={item.id}
-                    style={{
+            return <View
+                onTouchStart={() => {
+                    navigation.navigate('EditNote', { notes: item })
+                }}
+                key={item.id}
+                style={{
+                    backgroundColor: item.color,
+                    width: gridList ? "96%" : 180,
+                    marginRight: index % 2 === 0 ? 10 : "auto",
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 2,
+                    marginTop: 10
+                }} >
+                <Text>{item.title}</Text>
+                <Text style={{
+                    marginVertical: 5
+                }}>{item.description}</Text>
+                {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
+                    <View style={{
+                        padding: 5,
+                        borderWidth: 1,
+                        borderColor: "lightgray",
+                        borderRadius: 30,
                         backgroundColor: item.color,
-                        width: gridList ? "96%" : 180,
-                        marginRight: index % 2 === 0 ? 10 : "auto",
-                        // marginLeft: index % 2 === 0 ? "auto" : 5,
-                        borderRadius: 10,
-                        padding: 10,
-                        elevation: 2,
-                        marginTop: 10
-                    }} >
-                    <Text>{item.title}</Text>
-                    <Text style={{
-                        marginVertical: 5
-                    }}>{item.description}</Text>
-                    {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
-                        <View style={{
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "lightgray",
-                            borderRadius: 30,
-                            backgroundColor: item.color,
-                            width: item.reminder[0].length + 92,
-                            left: -5
-                        }}>
-                            <Text>{item.reminder[0].split('').filter((el, index) => {
-                                return index < 21 && index > 3
-                            })}</Text>
-                        </View> : null}
-                    <View style={styles.label}>
-                        {labelObj}
-                    </View>
+                        width: item.reminder[0].length + 92,
+                        left: -5
+                    }}>
+                        <Text>{item.reminder[0].split('').filter((el, index) => {
+                            return index < 21 && index > 3
+                        })}</Text>
+                    </View> : null}
+                <View style={styles.label}>
+                    {labelObj}
                 </View>
-            </TouchableOpacity>
+            </View>
         }
-
     })
     let archiveNotes = state.notes.map((item, index) => {
         let labelObj = item.noteLabels.map(item => {
