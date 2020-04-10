@@ -25,15 +25,17 @@ const Appbar = ({ navigation, gridList }) => {
                         navigation.openDrawer();
                     }} />
             </TouchableOpacity>
-            <View style={styles.searchBox}>
+            <TouchableOpacity onPress={() => {
+                navigation.navigate('Search')
+            }} style={styles.searchBox}>
                 <Feather name="search" size={20} />
                 <TextInput
+                    editable={false}
                     style={styles.search}
                     placeholder="Search..."
-
                 />
                 <EvilIcons name="close" size={20} />
-            </View>
+            </TouchableOpacity>
             <View style={styles.lastView}>
                 {listGrid ?
                     <TouchableOpacity onPress={() => {

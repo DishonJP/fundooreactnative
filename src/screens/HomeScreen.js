@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native"
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity } from "react-native"
 import { Divider } from "react-native-elements"
 import { Context as AuthContext } from "../contexts/UserContext"
 import { Context as NoteContext } from '../contexts/RootContext'
 import { SafeAreaView } from 'react-navigation'
 import Appbar from "../components/Appbar"
 import Footer from "../components/Footer"
-import { TouchableOpacity } from "react-native-gesture-handler"
 const HomeScreen = ({ navigation }) => {
     const { state, getNotes } = useContext(NoteContext)
     const [gridList, setGridList] = useState(false)
@@ -42,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
                     style={{
                         backgroundColor: item.color,
                         width: gridList ? "96%" : 180,
-                        marginRight: index % 2 === 0 ? 10 : "auto",
+                        marginRight: (index + 1) % 2 === 0 ? 0 : 10,
                         // marginLeft: index % 2 === 0 ? "auto" : 5,
                         borderRadius: 10,
                         padding: 10,
@@ -131,7 +130,9 @@ const HomeScreen = ({ navigation }) => {
         })
         if (item.isArchived === true && item.isDeleted === false) {
             pinCount++
-            return <TouchableOpacity>
+            return <TouchableOpacity onPress={() => {
+                navigation.navigate('EditNote', { notes: item })
+            }}>
                 <View
                     key={item.id}
                     style={{
@@ -182,7 +183,9 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (labelCount > 0 && item.isDeleted === false) {
-            return <TouchableOpacity>
+            return <TouchableOpacity onPress={() => {
+                navigation.navigate('EditNote', { notes: item })
+            }}>
                 <View
                     key={item.id}
                     style={{
@@ -228,7 +231,9 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (item.reminder.length > 0 && item.isDeleted === false) {
-            return <TouchableOpacity>
+            return <TouchableOpacity onPress={() => {
+                navigation.navigate('EditNote', { notes: item })
+            }}>
                 <View
                     key={item.id}
                     style={{
@@ -274,7 +279,9 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (item.isDeleted === true) {
-            return <TouchableOpacity>
+            return <TouchableOpacity onPress={() => {
+                navigation.navigate('EditNote', { notes: item })
+            }}>
                 <View
                     key={item.id}
                     style={{

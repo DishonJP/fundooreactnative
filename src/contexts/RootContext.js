@@ -6,6 +6,7 @@ import createDataContext from './createDataContext'
 import { navigate } from '../navigationRef'
 import Axios from 'axios'
 import Config from 'react-native-config'
+import userApi from '../constants/userApiConstants'
 const noteReducer = (state, action) => {
     switch (action.type) {
         case "getNote":
@@ -27,6 +28,11 @@ const noteReducer = (state, action) => {
             return {
                 ...state,
                 label: [...state.label, action.payload]
+            }
+        case "getUserList":
+            return {
+                ...state,
+                userList: action.payload
             }
         // case "updateNote":
         //     return{
@@ -51,14 +57,17 @@ const getNotes = dispatch => async () => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-
         dispatch({ type: "getLabel", payload: labelResponse.data.data.details })
+        const userList = await fundoo.get(userApi.userList)
+        dispatch({ type: "getUserList", payload: userList.data.data.data })
     } catch (error) {
         console.log(error);
     }
 }
 const addNote = dispatch => async (field) => {
     try {
+        console.log(field);
+
         const response = await fundoo.post(noteApi.createNote, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
@@ -70,6 +79,7 @@ const addNote = dispatch => async (field) => {
         navigate('Home')
     } catch (error) {
         console.log(error);
+        navigate('Home')
     }
 }
 const addLabel = dispatch => async (field) => {
@@ -82,7 +92,6 @@ const addLabel = dispatch => async (field) => {
         dispatch({ type: "addLabel", payload: response.data })
     } catch (error) {
         console.log(error);
-
     }
 }
 const updateNote = dispatch => async (field) => {
@@ -94,13 +103,17 @@ const updateNote = dispatch => async (field) => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        if (response.data.data.sucess === true) {
-            getNotes = (dispatch)
-        }
+        const responses = await fundoo.get(noteApi.getNotes, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "getNote", payload: responses.data.data.data })
+        navigate('Home')
 
     } catch (error) {
         console.log(error);
-
+        navigate('Home')
     }
 }
 const archiveNote = dispatch => async (field) => {
@@ -112,13 +125,16 @@ const archiveNote = dispatch => async (field) => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        if (response.data.data.sucess === true) {
-            getNotes = (dispatch)
-        }
+        const responses = await fundoo.get(noteApi.getNotes, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "getNote", payload: responses.data.data.data })
+        navigate('Home')
 
     } catch (error) {
         console.log(error);
-
     }
 }
 const colorNote = dispatch => async (field) => {
@@ -130,13 +146,14 @@ const colorNote = dispatch => async (field) => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        if (response.data.data.sucess === true) {
-            getNotes = (dispatch)
-        }
-
+        const responses = await fundoo.get(noteApi.getNotes, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "getNote", payload: responses.data.data.data })
     } catch (error) {
         console.log(error);
-
     }
 }
 const pinNote = dispatch => async (field) => {
@@ -149,10 +166,13 @@ const pinNote = dispatch => async (field) => {
             }
         })
         console.log(response);
+        const responses = await fundoo.get(noteApi.getNotes, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "getNote", payload: responses.data.data.data })
 
-        if (response.data.data.sucess === true) {
-            getNotes = (dispatch)
-        }
 
     } catch (error) {
         console.log(error);
@@ -168,9 +188,12 @@ const removeReminder = dispatch => async (field) => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        if (response.data.data.sucess === true) {
-            getNotes = (dispatch)
-        }
+        const responses = await fundoo.get(noteApi.getNotes, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "getNote", payload: responses.data.data.data })
 
     } catch (error) {
         console.log(error);
@@ -186,9 +209,13 @@ const updateReminder = dispatch => async (field) => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        if (response.data.data.sucess === true) {
-            getNotes = (dispatch)
-        }
+        const responses = await fundoo.get(noteApi.getNotes, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "getNote", payload: responses.data.data.data })
+
 
     } catch (error) {
         console.log(error);
@@ -204,9 +231,14 @@ const trashNote = dispatch => async (field) => {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        if (response.data.data.sucess === true) {
-            getNotes = (dispatch)
-        }
+        const responses = await fundoo.get(noteApi.getNotes, {
+            headers: {
+                Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
+            }
+        })
+        dispatch({ type: "getNote", payload: responses.data.data.data })
+        navigate('Home')
+
 
     } catch (error) {
         console.log(error);

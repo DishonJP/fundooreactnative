@@ -63,11 +63,33 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                 setLabel(array)
                 setLabelId(JSON.stringify(idArray))
             }
+            if (navigation.state.params.collaborator !== undefined) {
+                setCollab(navigation.state.params.collaborator)
+            }
         }
     }, [navigation])
-    let labelObj = noteLabels.map(el => {
+    let colabObj = collaborators.map((el, index) => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity key={index}>
+                <View style={{
+                    height: 50,
+                    width: 50,
+                    backgroundColor: "coral",
+                    borderWidth: 1,
+                    borderColor: "lightgray",
+                    borderRadius: 25,
+                    marginRight: 5,
+                    alignItems: "center",
+                    justifyContent: "center"
+                }}>
+                    <Text style={{ color: color }}>{el.firstName[0]}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    })
+    let labelObj = noteLabels.map((el, index) => {
+        return (
+            <TouchableOpacity key={index}>
                 <View style={{
                     padding: 5,
                     backgroundColor: color,
@@ -113,8 +135,22 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                         formData.append("description", description)
                         formData.append("color", color)
                         formData.append("isPined", isPined)
-                        formData.append("reminder", reminder.toString())
-                        formData.append("labelIdList", labelIdList)
+                        if (reminder.toString().length !== 0) {
+                            formData.append("reminder", reminder.toString())
+                        }
+                        if (labelIdList.length !== 0) {
+                            formData.append("labelIdList", labelIdList)
+                        }
+                        if (collaborators.length !== 0) {
+                            let collaberators = []
+                            collaborators.forEach(element => {
+                                collaberators.push({
+                                    firstName: element.firstName, lastName: element.lastName,
+                                    email: element.email, userId: element.userId
+                                })
+                            });
+                            formData.append("collaberators", collaberators)
+                        }
                         formData.append("isArchived", isArchived)
                         formData.append("isDeleted", isDeleted)
                     }
@@ -177,6 +213,9 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                             formData.append("isPined", isPined)
                             formData.append("reminder", reminder.toString())
                             formData.append("labelIdList", labelIdList)
+                            if (collaborators.length !== 0) {
+                                formData.append("collaberators", JSON.stringify(collaborators))
+                            }
                             formData.append("isArchived", !isArchived)
                             formData.append("isDeleted", isDeleted)
                             addNote(formData)
@@ -223,6 +262,9 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                 </TouchableOpacity> : null}
                 <View style={styles.label}>
                     {labelObj}
+                </View>
+                <View style={styles.label}>
+                    {colabObj}
                 </View>
             </View>
             <View style={{
@@ -275,16 +317,36 @@ const CreateEdit = ({ navigation, noteData, addNote, id }) => {
                     <MaterialCommunityIcons style={styles.moreIcon} name="content-copy" size={25} />
                     <Text>Make a copy</Text>
                 </View>
-                <View style={styles.View}>
-                    <EvilIcons style={styles.moreIcon} name="share-google" size={25} />
-                    <Text>
-                        Send
+                {id == 2 ?
+                    <TouchableOpacity onPress={() => {
+                        const field = {
+                            isDeleted: !isDeleted,
+                            noteIdList: [noteData.id]
+                        }
+                        trashNote(field);
+                        setDelete(!isDeleted)
+                    }}>
+                        <View style={styles.View}>
+                            <EvilIcons style={styles.moreIcon} name="trash" size={25} />
+                            <Text>
+                                Trash
                     </Text>
-                </View>
-                <View style={styles.View}>
-                    <MaterialIcons style={styles.moreIcon} name="person-add" size={25} />
-                    <Text>Collaborator</Text>
-                </View>
+                        </View>
+                    </TouchableOpacity>
+                    : <View style={styles.View}>
+                        <EvilIcons style={styles.moreIcon} name="share-google" size={25} />
+                        <Text>
+                            Send
+                    </Text>
+                    </View>}
+                <TouchableOpacity onPress={() => {
+                    id == 2 ? navigation.navigate('Collaborator', { id: id }) : navigation.navigate('Collaborator', { id: id })
+                }}>
+                    <View style={styles.View}>
+                        <MaterialIcons style={styles.moreIcon} name="person-add" size={25} />
+                        <Text>Collaborator</Text>
+                    </View>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     setMoreMenu(!moremenu)
                     navigation.navigate('LabelNote', { noteLabels: noteLabels, id: id, noteId: noteData.id })

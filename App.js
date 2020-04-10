@@ -13,6 +13,8 @@ import { Provider as RootProvider } from './src/contexts/RootContext'
 import LabelScreen from './src/screens/LabelScreen';
 import Drawer from './src/components/Drawer';
 import EditNoteScreen from './src/screens/EditNoteScreen';
+import SearchScreen from './src/screens/SearchScreen';
+import CollaboratorScreen from './src/screens/CollaboratorScreen';
 const SwitchNavigator = createSwitchNavigator({
   LoadingScreen: AuthLoadingScreen,
   loginFlow: createStackNavigator({
@@ -24,7 +26,9 @@ const SwitchNavigator = createSwitchNavigator({
       Home: HomeScreen,
       CreateNote: CreateNoteScreen,
       LabelNote: LabelScreen,
-      EditNote: EditNoteScreen
+      EditNote: EditNoteScreen,
+      Search: SearchScreen,
+      Collaborator: CollaboratorScreen
     })
   }, {
     contentComponent: Drawer
