@@ -72,6 +72,10 @@ target 'fundooreactnative' do
 
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'fundooreactnativeTests' do
     inherit! :complete
     # Pods for testing

@@ -5,13 +5,47 @@ import { StyleSheet, View, TouchableOpacity, TextInput, Image, Text } from 'reac
 import { Overlay, Divider, Button } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import AsyncStorage from '@react-native-community/async-storage'
+import ImagePicker from 'react-native-image-picker';
 import { Context as AuthContext } from '../contexts/UserContext'
 const Appbar = ({ navigation, gridList }) => {
-    const { state, signOut } = useContext(AuthContext);
+    const { state, signOut, profilePic } = useContext(AuthContext);
+    console.log(state);
+
     const [listGrid, setListGrid] = useState(true)
     const [menu, setMenu] = useState(false)
+    const [imageUrl, setImg] = useState("")
     if (state.token === null) {
         return null
+    }
+    const settingPic = () => {
+        const options = {
+            title: 'Select Avatar',
+            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+                const field = {
+                    file: source
+                }
+                console.log(source);
+
+                profilePic(field)
+                setImg(source)
+            }
+        });
     }
 
     return (
@@ -54,7 +88,7 @@ const Appbar = ({ navigation, gridList }) => {
                 <TouchableOpacity onPress={() => {
                     setMenu(!menu)
                 }}>
-                    <Image style={styles.userImg} />
+                    <Image style={styles.userImg} source={imageUrl} />
                 </TouchableOpacity>
             </View>
             <Overlay
@@ -64,7 +98,9 @@ const Appbar = ({ navigation, gridList }) => {
                     setMenu(!menu)
                 }}
             >
-                <Image style={styles.menuUserImg} />
+                <TouchableOpacity onPress={settingPic}>
+                    <Image style={styles.menuUserImg} source={imageUrl} />
+                </TouchableOpacity>
                 <Divider />
                 <Text style={styles.text}>
                     {(JSON.parse(state.token).firstName) + ((JSON.parse(state.token).lastName))}
@@ -127,11 +163,10 @@ const styles = StyleSheet.create({
         height: 70,
         width: 70,
         borderRadius: 70 / 2,
-        backgroundColor: "coral",
         alignSelf: "center",
         marginVertical: 20,
-        borderWidth: 3,
-        borderColor: "lightgray"
+        borderColor: "lightgray",
+        borderWidth: 1
     },
     text: {
         fontSize: 18,

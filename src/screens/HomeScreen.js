@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions } from "react-native"
 import { Divider } from "react-native-elements"
+import { PieChart } from "react-native-chart-kit";
 import { Context as AuthContext } from "../contexts/UserContext"
 import { Context as NoteContext } from '../contexts/RootContext'
 import { SafeAreaView } from 'react-navigation'
@@ -16,6 +17,19 @@ const HomeScreen = ({ navigation }) => {
         }
         getNotes();
     }, [navigation])
+    let pinCount = 0;
+    let upPinCount = 0;
+    let archiveCount = 0;
+    let trashCount = 0;
+    const chartConfig = {
+        backgroundGradientFrom: "#1E2923",
+        backgroundGradientFromOpacity: 0,
+        backgroundGradientTo: "#08130D",
+        backgroundGradientToOpacity: 0.5,
+        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+        strokeWidth: 2,
+        barPercentage: 0.5
+    };
     const ridList = (data) => {
         setGridList(data)
     }
@@ -23,7 +37,6 @@ const HomeScreen = ({ navigation }) => {
         return null
     }
     console.log(state);
-    let pinCount = 0;
     let allNotes = state.notes.map((item, index) => {
         let labelObj = item.noteLabels.map(item => {
             return <View key={item.id}
@@ -32,6 +45,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (item.isPined === false && item.isDeleted === false && item.isArchived === false) {
+            upPinCount++;
             return <TouchableOpacity
                 onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
@@ -129,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (item.isArchived === true && item.isDeleted === false) {
-            pinCount++
+            archiveCount++;
             return <TouchableOpacity onPress={() => {
                 navigation.navigate('EditNote', { notes: item })
             }}>
@@ -279,6 +293,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (item.isDeleted === true) {
+            trashCount++;
             return <TouchableOpacity onPress={() => {
                 navigation.navigate('EditNote', { notes: item })
             }}>
@@ -324,12 +339,56 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <ScrollView>
                     <Appbar gridList={ridList} />
-                    {name === "Notes" ? <View>{pinCount > 0 ? <View style={styles.pinNote}>
-                        <View style={{ width: "100%" }}>
-                            <Text>Pined</Text>
+                    {name === "Notes" ? <View>
+                        <View style={{
+                            alignItems: "center"
+                        }}>
+                            <PieChart
+                                data={[
+                                    {
+                                        name: "Pinned Notes",
+                                        notes: pinCount,
+                                        color: "pink",
+                                        legendFontColor: "#7F7F7F",
+                                        legendFontSize: 15
+                                    },
+                                    {
+                                        name: "Other Notes",
+                                        notes: upPinCount,
+                                        color: "dodgerblue",
+                                        legendFontColor: "#7F7F7F",
+                                        legendFontSize: 15
+                                    },
+                                    {
+                                        name: "Archive Notes",
+                                        notes: archiveCount,
+                                        color: "orange",
+                                        legendFontColor: "#7F7F7F",
+                                        legendFontSize: 15
+                                    },
+                                    {
+                                        name: "Trash Notes",
+                                        notes: trashCount,
+                                        color: "grey",
+                                        legendFontColor: "#7F7F7F",
+                                        legendFontSize: 15
+                                    }
+                                ]}
+                                height={200}
+                                width={Dimensions.get("screen").width}
+                                accessor="notes"
+                                backgroundColor="transparent"
+                                chartConfig={chartConfig}
+                                paddingLeft="15"
+                                absolute
+                            />
                         </View>
-                        {pinNotes}
-                    </View> : null}
+                        {pinCount > 0 ? <View style={styles.pinNote}>
+                            <View style={{ width: "100%" }}>
+                                <Text>Pined</Text>
+                            </View>
+                            {pinNotes}
+                        </View> : null}
                         {pinCount > 0 ?
                             <Divider /> : null}
                         <View style={styles.view}>

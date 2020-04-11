@@ -79,6 +79,22 @@ const signUp = dispatch => {
         }
     }
 }
+const profilePic = dispatch => {
+    return async (field) => {
+        try {
+            const response = await fundooApi.post(userApi.userPic, field)
+            console.log(response);
+
+            // await AsyncStorage.setItem('token', JSON.stringify(response.data))
+            // dispatch({ type: "signUp", payload: response.data.id })
+            // console.log(response.data);
+            // navigate('Login')
+        } catch (error) {
+            console.warn(error);
+
+        }
+    }
+}
 export const { Provider, Context } = createDataContext(authReducer,
-    { signIn, signUp, localSignIn, signOut }
+    { signIn, signUp, localSignIn, signOut, profilePic }
     , { token: null })
