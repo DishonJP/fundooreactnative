@@ -9,12 +9,22 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{
+                height: "100%",
+                width: "100%",
+                justifyContent: "center",
+            }} showsVerticalScrollIndicator={false}>
                 <Spacer>
                     <Text style={styles.text} h3>Login</Text>
                 </Spacer>
                 <Spacer>
                     <Input
+                        inputContainerStyle={{
+                            borderColor: "#fff"
+                        }}
+                        inputStyle={{
+                            color: "#fff"
+                        }}
                         label="Email"
                         value={email}
                         autoCapitalize="none"
@@ -24,6 +34,12 @@ const LoginScreen = ({ navigation }) => {
                 </Spacer>
                 <Spacer>
                     <Input
+                        inputContainerStyle={{
+                            borderColor: "#fff",
+                        }}
+                        inputStyle={{
+                            color: "#fff"
+                        }}
                         autoCorrect={false}
                         label="Password"
                         value={password}
@@ -32,14 +48,22 @@ const LoginScreen = ({ navigation }) => {
                         secureTextEntry={true}
                     />
                 </Spacer>
-                <Button title="Don't have an account?"
+                <Button
+                    titleStyle={{
+                        color: "cyan"
+                    }}
+                    title="Don't have an account?"
                     type="clear"
                     onPress={() => {
                         navigation.navigate('Registration')
                     }}
                 />
                 <Spacer>
-                    <Button title="Sign in" onPress={() => {
+                    <Button buttonStyle={{
+                        backgroundColor: "cyan",
+                        width: 150,
+                        alignSelf: "center"
+                    }} title="Sign in" onPress={() => {
                         signIn({ email, password })
                     }} />
                 </Spacer>
@@ -56,10 +80,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        backgroundColor: "lightgray"
+        backgroundColor: "slategray"
     },
     text: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: "cyan",
+        letterSpacing: 1
     }
 })
 export default LoginScreen;
