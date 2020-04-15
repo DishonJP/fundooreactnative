@@ -58,7 +58,7 @@ const signIn = dispatch => {
             dispatch({ type: "signIn", payload: response.data })
             navigate('DrawerFlow')
         } catch (error) {
-            dispatch({ type: "add_error", payload: "Something went wrong" })
+            dispatch({ type: "add_error", payload: JSON.stringify(error) })
         }
     }
 }
@@ -80,7 +80,7 @@ const signUp = dispatch => {
             console.warn(response);
             navigate('Login')
         } catch (error) {
-            dispatch({ type: "add_error", payload: "Something went wrong" })
+            dispatch({ type: "add_error", payload: error })
 
         }
     }

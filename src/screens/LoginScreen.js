@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
     }
     state.error === true ?
         Snackbar.show({
-            title: "Login Unsuccessful",
+            title: state.errorMessage,
             duration: Snackbar.LENGTH_LONG,
             textColor: "black",
             backgroundColor: "cyan"
