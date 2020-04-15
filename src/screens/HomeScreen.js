@@ -55,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
                     style={{
                         backgroundColor: item.color,
                         width: gridList ? "96%" : 180,
-                        marginRight: (index + 1) % 2 === 0 ? 0 : 10,
+                        marginRight: upPinCount % 2 === 0 ? 0 : 10,
                         // marginLeft: index % 2 === 0 ? "auto" : 5,
                         borderRadius: 10,
                         padding: 10,
@@ -105,7 +105,7 @@ const HomeScreen = ({ navigation }) => {
                 style={{
                     backgroundColor: item.color,
                     width: gridList ? "96%" : 180,
-                    marginRight: index % 2 === 0 ? 10 : "auto",
+                    marginRight: pinCount % 2 === 0 ? 0 : 10,
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
@@ -152,7 +152,7 @@ const HomeScreen = ({ navigation }) => {
                     style={{
                         backgroundColor: item.color,
                         width: gridList ? "96%" : 180,
-                        marginRight: index % 2 === 0 ? 10 : "auto",
+                        marginRight: archiveCount % 2 === 0 ? 0 : 10,
                         // marginLeft: index % 2 === 0 ? "auto" : 5,
                         borderRadius: 10,
                         padding: 10,
@@ -205,7 +205,7 @@ const HomeScreen = ({ navigation }) => {
                     style={{
                         backgroundColor: item.color,
                         width: gridList ? "96%" : 180,
-                        marginRight: index % 2 === 0 ? 10 : "auto",
+                        marginRight: labelCount % 2 === 0 ? 0 : 10,
                         borderRadius: 10,
                         padding: 10,
                         elevation: 2,
@@ -238,6 +238,7 @@ const HomeScreen = ({ navigation }) => {
 
     })
     let reminderNotes = state.notes.map((item, index) => {
+        let reminderCount = 0
         let labelObj = item.noteLabels.map(item => {
             return <View key={item.id}
                 style={styles.labelNote}>
@@ -245,6 +246,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (item.reminder.length > 0 && item.isDeleted === false) {
+            reminderCount++
             return <TouchableOpacity onPress={() => {
                 navigation.navigate('EditNote', { notes: item })
             }}>
@@ -253,7 +255,7 @@ const HomeScreen = ({ navigation }) => {
                     style={{
                         backgroundColor: item.color,
                         width: gridList ? "96%" : 180,
-                        marginRight: index % 2 === 0 ? 10 : "auto",
+                        marginRight: reminderCount % 2 === 0 ? 0 : 10,
                         borderRadius: 10,
                         padding: 10,
                         elevation: 2,
@@ -302,7 +304,7 @@ const HomeScreen = ({ navigation }) => {
                     style={{
                         backgroundColor: item.color,
                         width: gridList ? "96%" : 180,
-                        marginRight: index % 2 === 0 ? 10 : "auto",
+                        marginRight: trashCount % 2 === 0 ? 0 : 10,
                         borderRadius: 10,
                         padding: 10,
                         elevation: 2,
