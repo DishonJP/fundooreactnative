@@ -4,6 +4,7 @@ import userApi from "../constants/userApiConstants";
 import AsyncStorage from "@react-native-community/async-storage"
 import { navigate } from "../navigationRef";
 import Config from 'react-native-config'
+import Snackbar from "react-native-snackbar"
 import Axios from "axios";
 const authReducer = (state, action) => {
     switch (action.type) {
@@ -51,6 +52,12 @@ const signIn = dispatch => {
             const response = await Axios.post(Config.REACT_APP_BASE_URL + userApi.login, { email, password })
             console.log(response.data.id);
             await AsyncStorage.setItem('token', JSON.stringify(response.data))
+            Snackbar.show({
+                title: "Registration Successful",
+                duration: Snackbar.LENGTH_LONG,
+                color: "black",
+                backgroundColor: "coral"
+            })
             dispatch({ type: "signIn", payload: response.data })
             navigate('DrawerFlow')
         } catch (error) {

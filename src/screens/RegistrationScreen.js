@@ -6,10 +6,24 @@ import { Context as AuthContext } from '../contexts/UserContext'
 const RegistrationScreen = ({ navigation }) => {
     const { state, signUp } = useContext(AuthContext)
     const [firstName, setFirstName] = useState("");
+    const [fError, setFError] = useState(false)
     const [lastName, setLastName] = useState("");
+    const [lError, setLError] = useState(false)
     const [email, setEmail] = useState("");
+    const [emailErr, setEmErr] = useState(false)
     const [password, setPassword] = useState("");
+    const [passErr, setPassErr] = useState(false)
     const [repassword, setrepassword] = useState("")
+    const [rePasErr, setRePasErr] = useState(false)
+    const handleSubmit = () => {
+        let count = 0;
+        /^[a-zA-Z ]{2,30}$/.test(firstName) ? (setFError(false), count++) : setFError(true);
+        /^[a-zA-Z ]{2,30}$/.test(lastName) ? (setLError(false), count++) : setLError(true);
+        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email) ? (setEmErr(false), count++) : setEmErr(true);
+        password.length > 5 ? (setPassErr(false), count++) : setPassErr(true);
+        password === repassword ? (setRePasErr(false), count++) : setRePasErr(true);
+        count === 5 ? signUp({ firstName, lastName, email, password }) : null
+    }
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -24,6 +38,7 @@ const RegistrationScreen = ({ navigation }) => {
                         label="firstname"
                         value={firstName}
                         onChangeText={setFirstName}
+                        errorMessage={fError ? "invalid first name" : null}
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
@@ -33,6 +48,7 @@ const RegistrationScreen = ({ navigation }) => {
                         label="lastname"
                         value={lastName}
                         onChangeText={setLastName}
+                        errorMessage={lError ? "invalid last name" : null}
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
@@ -41,6 +57,7 @@ const RegistrationScreen = ({ navigation }) => {
                     <Input
                         label="email"
                         value={email}
+                        errorMessage={emailErr ? "invalid email" : null}
                         onChangeText={setEmail}
                         autoCapitalize="none"
                         autoCorrect={false}
@@ -50,6 +67,7 @@ const RegistrationScreen = ({ navigation }) => {
                     <Input
                         secureTextEntry
                         label="password"
+                        errorMessage={passErr ? "minimum character of 6" : null}
                         value={password}
                         onChangeText={setPassword}
                         autoCapitalize="none"
@@ -60,6 +78,7 @@ const RegistrationScreen = ({ navigation }) => {
                     <Input
                         secureTextEntry
                         label="re-enter-password"
+                        errorMessage={rePasErr ? "password does not match" : null}
                         value={repassword}
                         onChangeText={setrepassword}
                         autoCapitalize="none"
@@ -84,9 +103,7 @@ const RegistrationScreen = ({ navigation }) => {
                             alignSelf: "center"
                         }}
                         title="Sign Up"
-                        onPress={() => {
-                            signUp({ firstName, lastName, email, password })
-                        }}
+                        onPress={handleSubmit}
                     />
                 </Spacer>
             </ScrollView>

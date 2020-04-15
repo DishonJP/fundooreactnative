@@ -9,11 +9,7 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={{
-                height: "100%",
-                width: "100%",
-                justifyContent: "center",
-            }} showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Spacer>
                     <Text style={styles.text} h3>Login</Text>
                 </Spacer>
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        backgroundColor: "slategray"
+        backgroundColor: "slategray",
     },
     text: {
         alignSelf: 'center',
