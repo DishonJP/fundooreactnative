@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView } from "react-native"
 import { Text, Button, Input } from 'react-native-elements'
 import Spacer from "../components/Spacer"
 import { Context as AuthContext } from '../contexts/UserContext'
+import Snackbar from "react-native-snackbar"
 const RegistrationScreen = ({ navigation }) => {
     const { state, signUp } = useContext(AuthContext)
     const [firstName, setFirstName] = useState("");
@@ -24,6 +25,13 @@ const RegistrationScreen = ({ navigation }) => {
         password === repassword ? (setRePasErr(false), count++) : setRePasErr(true);
         count === 5 ? signUp({ firstName, lastName, email, password }) : null
     }
+    state.error === true ?
+        Snackbar.show({
+            title: "Registration Unsuccessful",
+            duration: Snackbar.LENGTH_LONG,
+            color: "black",
+            backgroundColor: "coral"
+        }) : null
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>

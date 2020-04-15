@@ -11,19 +11,22 @@ const authReducer = (state, action) => {
         case "add_error":
             return {
                 ...state,
+                error: true,
                 errorMessage: action.payload
             }
         case "signIn":
             return {
                 ...state,
                 token: action.payload,
-                errorMessage: ""
+                errorMessage: "",
+                error: false
             }
         case "signUp":
             return {
                 ...state,
                 token: action.payload,
-                errorMessage: ""
+                errorMessage: "",
+                error: false
             }
         case "signOut":
             return {
@@ -52,17 +55,9 @@ const signIn = dispatch => {
             const response = await Axios.post(Config.REACT_APP_BASE_URL + userApi.login, { email, password })
             console.log(response.data.id);
             await AsyncStorage.setItem('token', JSON.stringify(response.data))
-            Snackbar.show({
-                title: "Registration Successful",
-                duration: Snackbar.LENGTH_LONG,
-                color: "black",
-                backgroundColor: "coral"
-            })
             dispatch({ type: "signIn", payload: response.data })
             navigate('DrawerFlow')
         } catch (error) {
-            console.log(error);
-
             dispatch({ type: "add_error", payload: "Something went wrong" })
         }
     }
@@ -85,7 +80,7 @@ const signUp = dispatch => {
             console.warn(response);
             navigate('Login')
         } catch (error) {
-            console.warn(error);
+            dispatch({ type: "add_error", payload: "Something went wrong" })
 
         }
     }
@@ -108,4 +103,4 @@ const profilePic = dispatch => {
 }
 export const { Provider, Context } = createDataContext(authReducer,
     { signIn, signUp, localSignIn, signOut, profilePic }
-    , { token: null })
+    , { token: null, error: false, errorMessage: "" })
