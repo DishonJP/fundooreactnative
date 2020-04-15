@@ -1,10 +1,9 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Feather from 'react-native-vector-icons/Feather'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import { StyleSheet, View, TouchableOpacity, TextInput, Image, Text } from 'react-native'
 import { Overlay, Divider, Button } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
-import AsyncStorage from '@react-native-community/async-storage'
 import ImagePicker from 'react-native-image-picker';
 import { Context as AuthContext } from '../contexts/UserContext'
 const Appbar = ({ navigation, gridList }) => {
@@ -103,10 +102,10 @@ const Appbar = ({ navigation, gridList }) => {
                 </TouchableOpacity>
                 <Divider />
                 <Text style={styles.text}>
-                    {(JSON.parse(state.token).firstName) + ((JSON.parse(state.token).lastName))}
+                    {state.token.firstName + state.token.lastName}
                 </Text>
                 <Text style={styles.text}>
-                    {(JSON.parse(state.token).email)}
+                    {state.token.email}
                 </Text>
                 <Divider />
                 <Button

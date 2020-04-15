@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { View, SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList } from 'react-native'
+import { View, SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, ScrollView } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import EvilIcons from "react-native-vector-icons/EvilIcons"
@@ -40,58 +40,70 @@ const CollaboratorScreen = ({ navigation }) => {
                 <View style={styles.userIcon}><MaterialIcons name="person" color="#fff" size={40} /></View>
                 <Text style={styles.email}>{email}(owner)</Text>
             </View>
-            {collaborator.length !== 0 ? <FlatList
-                data={collaborator}
-                keyExtractor={item => item.userId}
-                renderItem={({ item }) => {
-                    console.log(item.email);
+            <ScrollView>
+                {collaborator.length !== 0 ? <FlatList
+                    data={collaborator}
+                    keyExtractor={item => item.userId}
+                    renderItem={({ item }) => {
+                        console.log(item.email);
 
-                    return <View style={styles.userContainer}>
-                        <View style={styles.userIcon}><MaterialIcons name="person" color="#fff" size={40} /></View>
-                        <Text style={styles.email}>{item.email}</Text>
-                        <EvilIcons onPress={() => {
-                            let tempArray = [];
-                            for (let i = 0; i < collaborator.length; i++) {
-                                if (collaborator[i].email == item.email) {
+                        return <View style={styles.userContainer}>
+                            <View style={styles.userIcon}><MaterialIcons name="person" color="#fff" size={40} /></View>
+                            <Text style={styles.email}>{item.email}</Text>
+                            <EvilIcons onPress={() => {
+                                let tempArray = [];
+                                for (let i = 0; i < collaborator.length; i++) {
+                                    if (collaborator[i].email == item.email) {
 
-                                } else {
-                                    tempArray.push(collaborator[i])
+                                    } else {
+                                        tempArray.push(collaborator[i])
+                                    }
                                 }
-                            }
-                            setColab(tempArray)
-                        }} style={{
-                            position: "absolute",
-                            right: 20
-                        }} name="close" size={30} />
-                    </View>
-                }}
-            /> : null}
-            <View style={styles.userContainer}>
-                <View style={styles.userIcon}><MaterialIcons name="person-add" color="#fff" size={40} /></View>
-                <TextInput style={{
-                    fontSize: 18,
-                    width: "65%",
-                }}
-                    value={search}
-                    onChangeText={setSearch}
-                    placeholder="add Collaborator" />
-                <Feather name="check" size={25} />
-            </View>
-            <FlatList
-                data={state.userList}
-                keyExtractor={item => item.userId}
-                renderItem={({ item }) => {
-                    return item.email.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()) && search !== "" ?
-                        <TouchableOpacity onPress={() => {
-                            setColab([...collaborator, item])
-                        }}>
-                            <View>
-                                <Text>{item.email}</Text>
-                            </View>
-                        </TouchableOpacity> : null
-                }}
-            />
-
+                                setColab(tempArray)
+                            }} style={{
+                                position: "absolute",
+                                right: 20
+                            }} name="close" size={30} />
+                        </View>
+                    }}
+                /> : null}
+                <View style={styles.userContainer}>
+                    <View style={styles.userIcon}><MaterialIcons name="person-add" color="#fff" size={40} /></View>
+                    <TextInput style={{
+                        fontSize: 18,
+                        width: "65%",
+                    }}
+                        value={search}
+                        onChangeText={setSearch}
+                        placeholder="add Collaborator" />
+                    <Feather name="check" size={25} />
+                </View>
+                <View style={{
+                    height: 200
+                }}>
+                    <FlatList
+                        data={state.userList}
+                        keyExtractor={item => item.userId}
+                        renderItem={({ item }) => {
+                            return item.email.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()) && search !== "" ?
+                                <TouchableOpacity onPress={() => {
+                                    setColab([...collaborator, item])
+                                }}>
+                                    <View style={{
+                                        height: 70,
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        padding: 20,
+                                        justifyContent: "center",
+                                        backgroundColor: "lightgray"
+                                    }}>
+                                        <Text style={styles.email}>{item.email}</Text>
+                                    </View>
+                                </TouchableOpacity> : null
+                        }}
+                    />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }

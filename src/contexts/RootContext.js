@@ -46,19 +46,19 @@ const getNotes = dispatch => async () => {
     try {
         console.log("hello");
 
-        const response = await fundoo.get(noteApi.getNotes, {
+        const response = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
         dispatch({ type: "getNote", payload: response.data.data.data })
-        const labelResponse = await fundoo.get(noteApi.getLabel, {
+        const labelResponse = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getLabel, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
         dispatch({ type: "getLabel", payload: labelResponse.data.data.details })
-        const userList = await fundoo.get(userApi.userList)
+        const userList = await Axios.get(Config.REACT_APP_BASE_URL + userApi.userList)
         dispatch({ type: "getUserList", payload: userList.data.data.data })
     } catch (error) {
         console.log(error);
@@ -68,7 +68,7 @@ const addNote = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.createNote, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.createNote, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -84,7 +84,7 @@ const addNote = dispatch => async (field) => {
 }
 const addLabel = dispatch => async (field) => {
     try {
-        const response = await fundoo.post(noteApi.labelNote, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.labelNote, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -98,12 +98,12 @@ const updateNote = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.updateNotes, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.updateNotes, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        const responses = await fundoo.get(noteApi.getNotes, {
+        const responses = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -120,12 +120,12 @@ const archiveNote = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.archive, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.archive, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        const responses = await fundoo.get(noteApi.getNotes, {
+        const responses = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -141,12 +141,12 @@ const colorNote = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.changeColor, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.changeColor, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        const responses = await fundoo.get(noteApi.getNotes, {
+        const responses = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -160,13 +160,13 @@ const pinNote = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.pinNotes, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.pinNotes, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
         console.log(response);
-        const responses = await fundoo.get(noteApi.getNotes, {
+        const responses = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -183,12 +183,12 @@ const removeReminder = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.removeReminder, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.removeReminder, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        const responses = await fundoo.get(noteApi.getNotes, {
+        const responses = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -204,12 +204,12 @@ const updateReminder = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.updateReminder, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.updateReminder, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        const responses = await fundoo.get(noteApi.getNotes, {
+        const responses = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
@@ -226,12 +226,12 @@ const trashNote = dispatch => async (field) => {
     try {
         console.log(field);
 
-        const response = await fundoo.post(noteApi.trashNote, field, {
+        const response = await Axios.post(Config.REACT_APP_BASE_URL + noteApi.trashNote, field, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }
         })
-        const responses = await fundoo.get(noteApi.getNotes, {
+        const responses = await Axios.get(Config.REACT_APP_BASE_URL + noteApi.getNotes, {
             headers: {
                 Authorization: JSON.parse(await AsyncStorage.getItem('token')).id
             }

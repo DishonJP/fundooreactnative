@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 import com.android.build.OutputFile
 
 /**
@@ -150,6 +150,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+          release {
+            storeFile file('app.keystore')
+            storePassword "2321186"
+            keyAlias "Dishon"
+            keyPassword "2321186"
+   }
     }
     buildTypes {
         debug {
