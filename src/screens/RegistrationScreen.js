@@ -15,7 +15,8 @@ const RegistrationScreen = ({ navigation }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Spacer>
                     <Text style={{
-                        alignSelf: "center"
+                        alignSelf: "center",
+                        color: "coral"
                     }} h3>Registration</Text>
                 </Spacer>
                 <Spacer>
@@ -66,6 +67,9 @@ const RegistrationScreen = ({ navigation }) => {
                     />
                 </Spacer>
                 <Button
+                    titleStyle={{
+                        color: "coral"
+                    }}
                     type="clear"
                     title="Already have an account?"
                     onPress={() => {
@@ -73,7 +77,13 @@ const RegistrationScreen = ({ navigation }) => {
                     }}
                 />
                 <Spacer>
-                    <Button title="Sign Up"
+                    <Button
+                        buttonStyle={{
+                            backgroundColor: "coral",
+                            width: 150,
+                            alignSelf: "center"
+                        }}
+                        title="Sign Up"
                         onPress={() => {
                             signUp({ firstName, lastName, email, password })
                         }}
@@ -91,7 +101,8 @@ RegistrationScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center"
+        justifyContent: "center",
+        backgroundColor: "#fff"
     }
 })
 export default RegistrationScreen;
