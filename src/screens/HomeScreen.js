@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions } from "react-native"
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native"
 import { Divider } from "react-native-elements"
 import { PieChart } from "react-native-chart-kit";
 import { Context as AuthContext } from "../contexts/UserContext"
@@ -7,6 +7,7 @@ import { Context as NoteContext } from '../contexts/RootContext'
 import { SafeAreaView } from 'react-navigation'
 import Appbar from "../components/Appbar"
 import Footer from "../components/Footer"
+import Animated from "react-native-reanimated";
 const HomeScreen = ({ navigation }) => {
     const { state, getNotes } = useContext(NoteContext)
     const [gridList, setGridList] = useState(false)
@@ -54,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
                     key={item.id}
                     style={{
                         backgroundColor: item.color,
-                        width: gridList ? "96%" : 180,
+                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
                         marginRight: upPinCount % 2 === 0 ? 0 : 10,
                         // marginLeft: index % 2 === 0 ? "auto" : 5,
                         borderRadius: 10,
@@ -97,42 +98,44 @@ const HomeScreen = ({ navigation }) => {
         })
         if (item.isPined === true && item.isDeleted === false && item.isArchived === false) {
             pinCount++
-            return <View
-                onTouchStart={() => {
+            return <TouchableWithoutFeedback
+                onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
                 }}
-                key={item.id}
-                style={{
-                    backgroundColor: item.color,
-                    width: gridList ? "96%" : 180,
-                    marginRight: pinCount % 2 === 0 ? 0 : 10,
-                    borderRadius: 10,
-                    padding: 10,
-                    elevation: 2,
-                    marginTop: 10
-                }} >
-                <Text>{item.title}</Text>
-                <Text style={{
-                    marginVertical: 5
-                }}>{item.description}</Text>
-                {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
-                    <View style={{
-                        padding: 5,
-                        borderWidth: 1,
-                        borderColor: "lightgray",
-                        borderRadius: 30,
+            >
+                <Animated.View key={item.id}
+                    style={{
                         backgroundColor: item.color,
-                        width: item.reminder[0].length + 92,
-                        left: -5
-                    }}>
-                        <Text>{item.reminder[0].split('').filter((el, index) => {
-                            return index < 21 && index > 3
-                        })}</Text>
-                    </View> : null}
-                <View style={styles.label}>
-                    {labelObj}
-                </View>
-            </View>
+                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
+                        marginRight: pinCount % 2 === 0 ? 0 : 10,
+                        borderRadius: 10,
+                        padding: 10,
+                        elevation: 2,
+                        marginTop: 10
+                    }} >
+                    <Text>{item.title}</Text>
+                    <Text style={{
+                        marginVertical: 5
+                    }}>{item.description}</Text>
+                    {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
+                        <View style={{
+                            padding: 5,
+                            borderWidth: 1,
+                            borderColor: "lightgray",
+                            borderRadius: 30,
+                            backgroundColor: item.color,
+                            width: item.reminder[0].length + 92,
+                            left: -5
+                        }}>
+                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                                return index < 21 && index > 3
+                            })}</Text>
+                        </View> : null}
+                    <View style={styles.label}>
+                        {labelObj}
+                    </View>
+                </Animated.View>
+            </TouchableWithoutFeedback>
         }
     })
     let archiveNotes = state.notes.map((item, index) => {
@@ -151,7 +154,7 @@ const HomeScreen = ({ navigation }) => {
                     key={item.id}
                     style={{
                         backgroundColor: item.color,
-                        width: gridList ? "96%" : 180,
+                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
                         marginRight: archiveCount % 2 === 0 ? 0 : 10,
                         // marginLeft: index % 2 === 0 ? "auto" : 5,
                         borderRadius: 10,
@@ -204,7 +207,7 @@ const HomeScreen = ({ navigation }) => {
                     key={item.id}
                     style={{
                         backgroundColor: item.color,
-                        width: gridList ? "96%" : 180,
+                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
                         marginRight: labelCount % 2 === 0 ? 0 : 10,
                         borderRadius: 10,
                         padding: 10,
@@ -254,7 +257,7 @@ const HomeScreen = ({ navigation }) => {
                     key={item.id}
                     style={{
                         backgroundColor: item.color,
-                        width: gridList ? "96%" : 180,
+                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
                         marginRight: reminderCount % 2 === 0 ? 0 : 10,
                         borderRadius: 10,
                         padding: 10,
@@ -303,7 +306,7 @@ const HomeScreen = ({ navigation }) => {
                     key={item.id}
                     style={{
                         backgroundColor: item.color,
-                        width: gridList ? "96%" : 180,
+                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
                         marginRight: trashCount % 2 === 0 ? 0 : 10,
                         borderRadius: 10,
                         padding: 10,
@@ -430,7 +433,8 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         flex: 1,
         marginBottom: 90,
-        marginLeft: 10
+        marginLeft: 10,
+        width: "100%"
     },
     label: {
         flexDirection: "row",

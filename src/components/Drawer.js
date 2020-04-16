@@ -4,11 +4,10 @@ import { Divider } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import DrawerContent from './DrawerContent'
 import { Context as RootContext } from '../contexts/RootContext'
 const Drawer = ({ navigation }) => {
     const { state } = useContext(RootContext);
-    const [color, setColor] = useState(null)
+    const [color, setColor] = useState(null);
     const changeColor = (index) => {
         if (color === index) {
             return "#feefc3";
@@ -22,15 +21,44 @@ const Drawer = ({ navigation }) => {
                     <Text style={styles.fundoo}>Fundoo</Text>
                     <Text style={styles.note}>Note</Text>
                 </View>
-                <DrawerContent
-                    navigation={navigation}
-                    name="Notes"
-                    icon={<AntDesign style={styles.icon} name="bulb1" size={20} />} />
+                <TouchableOpacity onPress={() => {
+                    setColor("a")
+                    navigation.closeDrawer()
+                    navigation.navigate('Home', { name: "Notes" })
 
-                <DrawerContent
-                    navigation={navigation}
-                    name="Reminder"
-                    icon={<MaterialCommunityIcons style={styles.icon} name="bell-plus-outline" size={20} />} />
+                }}>
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        height: 50,
+                        backgroundColor: changeColor("a"),
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        marginRight: 10
+                    }}>
+                        <AntDesign style={styles.icon} name="bulb1" size={20} />
+                        <Text style={styles.contentText}>Notes</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    setColor("b")
+                    navigation.closeDrawer()
+                    navigation.navigate('Home', { name: "Reminder" })
+
+                }}>
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        height: 50,
+                        backgroundColor: changeColor("b"),
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        marginRight: 10
+                    }}>
+                        <MaterialCommunityIcons style={styles.icon} name="bell-plus-outline" size={20} />
+                        <Text style={styles.contentText}>Reminder</Text>
+                    </View>
+                </TouchableOpacity>
                 <Divider />
                 <View style={styles.label}>
                     <Text style={{
@@ -77,14 +105,44 @@ const Drawer = ({ navigation }) => {
                     }}
                 />
                 <Divider />
-                <DrawerContent
-                    navigation={navigation}
-                    name="Archive"
-                    icon={<MaterialIcons style={styles.icon} name="archive" size={20} />} />
-                <DrawerContent
-                    navigation={navigation}
-                    name="Trash"
-                    icon={<AntDesign style={styles.icon} name="delete" size={20} />} />
+                <TouchableOpacity onPress={() => {
+                    setColor("c")
+                    navigation.closeDrawer()
+                    navigation.navigate('Home', { name: "Archive" })
+
+                }}>
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        height: 50,
+                        backgroundColor: changeColor("c"),
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        marginRight: 10
+                    }}>
+                        <MaterialIcons style={styles.icon} name="archive" size={20} />
+                        <Text style={styles.contentText}>Archive</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    setColor("d")
+                    navigation.closeDrawer()
+                    navigation.navigate('Home', { name: "Archive" })
+
+                }}>
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        height: 50,
+                        backgroundColor: changeColor("d"),
+                        borderTopRightRadius: 50,
+                        borderBottomRightRadius: 50,
+                        marginRight: 10
+                    }}>
+                        <AntDesign style={styles.icon} name="delete" size={20} />
+                        <Text style={styles.contentText}>Trash</Text>
+                    </View>
+                </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     )
@@ -119,6 +177,10 @@ const styles = StyleSheet.create({
         height: 30,
         alignItems: "center",
         justifyContent: "space-between"
+    },
+    contentText: {
+        letterSpacing: 1,
+        fontSize: 16
     }
 })
 export default Drawer

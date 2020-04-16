@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-const DrawerContent = ({ navigation, name, icon }) => {
-    const [color, setColor] = useState(false)
+const DrawerContent = ({ navigation, name, icon, index }) => {
+    const [color, setColor] = useState(null)
+    const changeColor = (index) => {
+        if (color === index) {
+            return "#feefc3";
+        }
+        return "#fff";
+    }
     return (
         <TouchableOpacity onPress={() => {
-            setColor(!color)
+            setColor(index)
             navigation.closeDrawer()
             navigation.navigate('Home', { name: name })
 
@@ -14,7 +20,7 @@ const DrawerContent = ({ navigation, name, icon }) => {
                 flexDirection: "row",
                 alignItems: "center",
                 height: 50,
-                backgroundColor: color ? "#feefc3" : "#fff",
+                backgroundColor: changeColor(index),
                 borderTopRightRadius: 50,
                 borderBottomRightRadius: 50,
                 marginRight: 10
