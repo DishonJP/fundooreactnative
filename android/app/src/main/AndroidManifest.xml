@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.fundooreactnative">
+  <meta-data
+  android:name="REACT_APP_BASE_URL"
+  android:value="http://fundoonotes.incubation.bridgelabz.com/api" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.CAMERA" />

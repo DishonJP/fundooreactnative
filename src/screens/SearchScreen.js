@@ -107,6 +107,56 @@ const SearchScreen = ({ navigation }) => {
             </TouchableOpacity>
         }
     })
+    let reminderNotes = state.notes.map((item, index) => {
+        let reminderCount = 0
+        let labelObj = item.noteLabels.map(item => {
+            return <View key={item.id}
+                style={styles.labelNote}>
+                <Text>{item.label}</Text>
+            </View>
+        })
+        if (item.reminder.length > 0) {
+            reminderCount++
+            return <TouchableOpacity onPress={() => {
+                navigation.navigate('EditNote', { notes: item })
+            }}>
+                <View
+                    key={item.id}
+                    style={{
+                        backgroundColor: item.color,
+                        width: 180,
+                        marginRight: reminderCount % 2 === 0 ? 0 : 10,
+                        borderRadius: 10,
+                        padding: 10,
+                        elevation: 2,
+                        marginTop: 10
+                    }} >
+                    <Text>{item.title}</Text>
+                    <Text style={{
+                        marginVertical: 5
+                    }}>{item.description}</Text>
+                    {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
+                        <View style={{
+                            padding: 5,
+                            borderWidth: 1,
+                            borderColor: "lightgray",
+                            borderRadius: 30,
+                            backgroundColor: item.color,
+                            width: item.reminder[0].length + 92,
+                            left: -5
+                        }}>
+                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                                return index < 21 && index > 3
+                            })}</Text>
+                        </View> : null}
+                    <View style={styles.label}>
+                        {labelObj}
+                    </View>
+                </View>
+            </TouchableOpacity>
+        }
+
+    })
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -125,53 +175,61 @@ const SearchScreen = ({ navigation }) => {
                 />
             </View>
             <ScrollView>
-                {allNotesCount > 0 && search !== "" ? <View style={styles.view}>{allNotes}</View> : <><View style={styles.headerText}>
-                    <Text style={styles.title}>TYPES</Text>
-                </View>
-                    <View style={styles.typesContainer}>
-                        <MaterialCommunityIcons color="#fff" name="bell-plus-outline" size={25} />
-                        <Text
-                            style={{
-                                top: 40,
-                                color: "#fff"
-                            }}>Reminder</Text>
-                    </View>
-                    <View style={styles.headerText}>
-                        <Text style={styles.title}>LABELS</Text>
-                        <Button
-                            onPress={() => {
-                                setHeight(!height)
-                            }}
-                            type="clear"
-                            title="more" />
-                    </View>
-                    <View style={{
-                        height: height ? "auto" : 127,
-                        width: "100%",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        overflow: "hidden"
-                    }}>
-                        {labelNotes}
-                    </View>
-                    <View style={styles.headerText}>
-                        <Text style={styles.title}>COLOURS</Text>
-                        <Button
-                            onPress={() => {
-                                setColHeight(!colorHeight)
-                            }}
-                            type="clear"
-                            title="more" />
-                    </View>
-                    <View style={{
-                        height: colorHeight ? "auto" : 65,
-                        width: "100%",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        overflow: "hidden"
-                    }}>
-                        {colorObj}
-                    </View></>}
+                {"Reminder" === search ?
+                    <View style={styles.view}>{reminderNotes}</View> :
+                    allNotesCount > 0 && search !== "" ? <View style={styles.view}>{allNotes}</View>
+                        :
+                        <><View style={styles.headerText}>
+                            <Text style={styles.title}>TYPES</Text>
+                        </View>
+                            <TouchableWithoutFeedback onPress={() => {
+                                setSearch("Reminder")
+                            }}>
+                                <View style={styles.typesContainer}>
+                                    <MaterialCommunityIcons color="#fff" name="bell-plus-outline" size={25} />
+                                    <Text
+                                        style={{
+                                            top: 40,
+                                            color: "#fff"
+                                        }}>Reminder</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <View style={styles.headerText}>
+                                <Text style={styles.title}>LABELS</Text>
+                                <Button
+                                    onPress={() => {
+                                        setHeight(!height)
+                                    }}
+                                    type="clear"
+                                    title="more" />
+                            </View>
+                            <View style={{
+                                height: height ? "auto" : 127,
+                                width: "100%",
+                                flexDirection: "row",
+                                flexWrap: "wrap",
+                                overflow: "hidden"
+                            }}>
+                                {labelNotes}
+                            </View>
+                            <View style={styles.headerText}>
+                                <Text style={styles.title}>COLOURS</Text>
+                                <Button
+                                    onPress={() => {
+                                        setColHeight(!colorHeight)
+                                    }}
+                                    type="clear"
+                                    title="more" />
+                            </View>
+                            <View style={{
+                                height: colorHeight ? "auto" : 65,
+                                width: "100%",
+                                flexDirection: "row",
+                                flexWrap: "wrap",
+                                overflow: "hidden"
+                            }}>
+                                {colorObj}
+                            </View></>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -229,7 +287,11 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginTop: 5,
         left: -5
-    }
+    },
+    label: {
+        flexDirection: "row",
+        flexWrap: "wrap"
+    },
 })
 SearchScreen.navigationOptions = () => {
     return {

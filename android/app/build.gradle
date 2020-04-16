@@ -129,7 +129,8 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.fundooreactnative"
+        resValue "string", "build_config_package", "com.fundooreactnative"
+        applicationId project.env.get("APP_ID")
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
