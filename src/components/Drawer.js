@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Context as RootContext } from '../contexts/RootContext'
 const Drawer = ({ navigation }) => {
     const { state } = useContext(RootContext);
-    const [color, setColor] = useState(null);
+    const [color, setColor] = useState("a");
     const changeColor = (index) => {
         if (color === index) {
             return "#feefc3";

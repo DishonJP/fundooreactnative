@@ -48,36 +48,39 @@ const HomeScreen = ({ navigation }) => {
         if (item.isPined === false && item.isDeleted === false && item.isArchived === false) {
             upPinCount++;
             return <TouchableOpacity
+                key={item.id}
+                style={{
+                    backgroundColor: item.color,
+                    width: gridList ? "96%" : "46%",
+                    marginRight: upPinCount % 2 === 0 ? 0 : 10,
+                    // marginLeft: index % 2 === 0 ? "auto" : 5,
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 2,
+                    marginTop: 10
+                }}
                 onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
                 }}>
                 <View
-                    key={item.id}
-                    style={{
-                        backgroundColor: item.color,
-                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
-                        marginRight: upPinCount % 2 === 0 ? 0 : 10,
-                        // marginLeft: index % 2 === 0 ? "auto" : 5,
-                        borderRadius: 10,
-                        padding: 10,
-                        elevation: 2,
-                        marginTop: 10
-                    }} >
+                >
                     <Text>{item.title}</Text>
                     <Text style={{
                         marginVertical: 5
                     }}>{item.description}</Text>
                     {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
                         <View style={{
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "lightgray",
-                            borderRadius: 30,
-                            backgroundColor: item.color,
-                            width: item.reminder[0].length + 92,
-                            left: -5
+                            flex: 1,
+                            flexDirection: "row"
                         }}>
-                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                            <Text style={{
+                                padding: 5,
+                                borderWidth: 1,
+                                borderColor: "lightgray",
+                                borderRadius: 30,
+                                backgroundColor: item.color,
+                                left: -5
+                            }}>{item.reminder[0].split('').filter((el, index) => {
                                 return index < 21 && index > 3
                             })}</Text>
                         </View> : null}
@@ -98,44 +101,47 @@ const HomeScreen = ({ navigation }) => {
         })
         if (item.isPined === true && item.isDeleted === false && item.isArchived === false) {
             pinCount++
-            return <TouchableWithoutFeedback
+            return <TouchableOpacity
+                key={item.id}
+                style={{
+                    backgroundColor: item.color,
+                    width: gridList ? "96%" : "46%",
+                    marginRight: pinCount % 2 === 0 ? 0 : 10,
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 2,
+                    marginTop: 10
+                }}
                 onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
                 }}
             >
-                <Animated.View key={item.id}
-                    style={{
-                        backgroundColor: item.color,
-                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
-                        marginRight: pinCount % 2 === 0 ? 0 : 10,
-                        borderRadius: 10,
-                        padding: 10,
-                        elevation: 2,
-                        marginTop: 10
-                    }} >
+                <View >
                     <Text>{item.title}</Text>
                     <Text style={{
                         marginVertical: 5
                     }}>{item.description}</Text>
                     {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
                         <View style={{
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "lightgray",
-                            borderRadius: 30,
-                            backgroundColor: item.color,
-                            width: item.reminder[0].length + 92,
-                            left: -5
+                            flex: 1,
+                            flexDirection: "row"
                         }}>
-                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                            <Text style={{
+                                padding: 5,
+                                borderWidth: 1,
+                                borderColor: "lightgray",
+                                borderRadius: 30,
+                                backgroundColor: item.color,
+                                left: -5
+                            }}>{item.reminder[0].split('').filter((el, index) => {
                                 return index < 21 && index > 3
                             })}</Text>
                         </View> : null}
                     <View style={styles.label}>
                         {labelObj}
                     </View>
-                </Animated.View>
-            </TouchableWithoutFeedback>
+                </View>
+            </TouchableOpacity>
         }
     })
     let archiveNotes = state.notes.map((item, index) => {
@@ -147,36 +153,38 @@ const HomeScreen = ({ navigation }) => {
         })
         if (item.isArchived === true && item.isDeleted === false) {
             archiveCount++;
-            return <TouchableOpacity onPress={() => {
-                navigation.navigate('EditNote', { notes: item })
-            }}>
-                <View
-                    key={item.id}
-                    style={{
-                        backgroundColor: item.color,
-                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
-                        marginRight: archiveCount % 2 === 0 ? 0 : 10,
-                        // marginLeft: index % 2 === 0 ? "auto" : 5,
-                        borderRadius: 10,
-                        padding: 10,
-                        elevation: 2,
-                        marginTop: 10
-                    }} >
+            return <TouchableOpacity
+                key={item.id}
+                style={{
+                    backgroundColor: item.color,
+                    width: gridList ? "96%" : "46%",
+                    marginRight: archiveCount % 2 === 0 ? 0 : 10,
+                    // marginLeft: index % 2 === 0 ? "auto" : 5,
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 2,
+                    marginTop: 10
+                }} onPress={() => {
+                    navigation.navigate('EditNote', { notes: item })
+                }}>
+                <View>
                     <Text>{item.title}</Text>
                     <Text style={{
                         marginVertical: 5
                     }}>{item.description}</Text>
                     {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
                         <View style={{
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "lightgray",
-                            borderRadius: 30,
-                            backgroundColor: item.color,
-                            width: item.reminder[0].length + 92,
-                            left: -5
+                            flex: 1,
+                            flexDirection: "row"
                         }}>
-                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                            <Text style={{
+                                padding: 5,
+                                borderWidth: 1,
+                                borderColor: "lightgray",
+                                borderRadius: 30,
+                                backgroundColor: item.color,
+                                left: -5
+                            }}>{item.reminder[0].split('').filter((el, index) => {
                                 return index < 21 && index > 3
                             })}</Text>
                         </View> : null}
@@ -200,35 +208,37 @@ const HomeScreen = ({ navigation }) => {
             </View>
         })
         if (labelCount > 0 && item.isDeleted === false) {
-            return <TouchableOpacity onPress={() => {
-                navigation.navigate('EditNote', { notes: item })
-            }}>
-                <View
-                    key={item.id}
-                    style={{
-                        backgroundColor: item.color,
-                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
-                        marginRight: labelCount % 2 === 0 ? 0 : 10,
-                        borderRadius: 10,
-                        padding: 10,
-                        elevation: 2,
-                        marginTop: 10
-                    }} >
+            return <TouchableOpacity
+                key={item.id}
+                style={{
+                    backgroundColor: item.color,
+                    width: gridList ? "96%" : "46%",
+                    marginRight: labelCount % 2 === 0 ? 0 : 10,
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 2,
+                    marginTop: 10
+                }} onPress={() => {
+                    navigation.navigate('EditNote', { notes: item })
+                }}>
+                <View >
                     <Text>{item.title}</Text>
                     <Text style={{
                         marginVertical: 5
                     }}>{item.description}</Text>
                     {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
                         <View style={{
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "lightgray",
-                            borderRadius: 30,
-                            backgroundColor: item.color,
-                            width: item.reminder[0].length + 92,
-                            left: -5
+                            flex: 1,
+                            flexDirection: "row"
                         }}>
-                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                            <Text style={{
+                                padding: 5,
+                                borderWidth: 1,
+                                borderColor: "lightgray",
+                                borderRadius: 30,
+                                backgroundColor: item.color,
+                                left: -5
+                            }}>{item.reminder[0].split('').filter((el, index) => {
                                 return index < 21 && index > 3
                             })}</Text>
                         </View> : null}
@@ -250,35 +260,37 @@ const HomeScreen = ({ navigation }) => {
         })
         if (item.reminder.length > 0 && item.isDeleted === false) {
             reminderCount++
-            return <TouchableOpacity onPress={() => {
-                navigation.navigate('EditNote', { notes: item })
-            }}>
-                <View
-                    key={item.id}
-                    style={{
-                        backgroundColor: item.color,
-                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
-                        marginRight: reminderCount % 2 === 0 ? 0 : 10,
-                        borderRadius: 10,
-                        padding: 10,
-                        elevation: 2,
-                        marginTop: 10
-                    }} >
+            return <TouchableOpacity
+                key={item.id}
+                style={{
+                    backgroundColor: item.color,
+                    width: gridList ? "96%" : "46%",
+                    marginRight: reminderCount % 2 === 0 ? 0 : 10,
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 2,
+                    marginTop: 10
+                }} onPress={() => {
+                    navigation.navigate('EditNote', { notes: item })
+                }}>
+                <View>
                     <Text>{item.title}</Text>
                     <Text style={{
                         marginVertical: 5
                     }}>{item.description}</Text>
                     {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
                         <View style={{
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "lightgray",
-                            borderRadius: 30,
-                            backgroundColor: item.color,
-                            width: item.reminder[0].length + 92,
-                            left: -5
+                            flex: 1,
+                            flexDirection: "row"
                         }}>
-                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                            <Text style={{
+                                padding: 5,
+                                borderWidth: 1,
+                                borderColor: "lightgray",
+                                borderRadius: 30,
+                                backgroundColor: item.color,
+                                left: -5
+                            }}>{item.reminder[0].split('').filter((el, index) => {
                                 return index < 21 && index > 3
                             })}</Text>
                         </View> : null}
@@ -299,35 +311,37 @@ const HomeScreen = ({ navigation }) => {
         })
         if (item.isDeleted === true) {
             trashCount++;
-            return <TouchableOpacity onPress={() => {
-                navigation.navigate('EditNote', { notes: item })
-            }}>
-                <View
-                    key={item.id}
-                    style={{
-                        backgroundColor: item.color,
-                        width: gridList ? Dimensions.get("screen").width - 20 : 180,
-                        marginRight: trashCount % 2 === 0 ? 0 : 10,
-                        borderRadius: 10,
-                        padding: 10,
-                        elevation: 2,
-                        marginTop: 10
-                    }} >
+            return <TouchableOpacity
+                key={item.id}
+                style={{
+                    backgroundColor: item.color,
+                    width: gridList ? "96%" : "46%",
+                    marginRight: trashCount % 2 === 0 ? 0 : 10,
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 2,
+                    marginTop: 10
+                }} onPress={() => {
+                    navigation.navigate('EditNote', { notes: item })
+                }}>
+                <View>
                     <Text>{item.title}</Text>
                     <Text style={{
                         marginVertical: 5
                     }}>{item.description}</Text>
                     {item.reminder.length === 0 ? null : item.reminder[0].length !== 0 ?
                         <View style={{
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "lightgray",
-                            borderRadius: 30,
-                            backgroundColor: item.color,
-                            width: item.reminder[0].length + 92,
-                            left: -5
+                            flex: 1,
+                            flexDirection: "row"
                         }}>
-                            <Text>{item.reminder[0].split('').filter((el, index) => {
+                            <Text style={{
+                                padding: 5,
+                                borderWidth: 1,
+                                borderColor: "lightgray",
+                                borderRadius: 30,
+                                backgroundColor: item.color,
+                                left: -5
+                            }}>{item.reminder[0].split('').filter((el, index) => {
                                 return index < 21 && index > 3
                             })}</Text>
                         </View> : null}
@@ -340,7 +354,7 @@ const HomeScreen = ({ navigation }) => {
 
     })
     return (
-        <SafeAreaView forceInset={{ top: "always" }}>
+        <SafeAreaView forceInset={{ top: "always", right: "always", bottom: "always" }}>
             <View style={styles.container}>
                 <ScrollView>
                     <Appbar gridList={ridList} />
