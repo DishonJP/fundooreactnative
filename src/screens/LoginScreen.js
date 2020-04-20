@@ -35,6 +35,9 @@ const LoginScreen = ({ navigation }) => {
                     </Spacer>
                     <Spacer>
                         <Input
+                            labelStyle={{
+                                color: "cyan"
+                            }}
                             inputContainerStyle={{
                                 borderColor: "#fff"
                             }}
@@ -51,6 +54,9 @@ const LoginScreen = ({ navigation }) => {
                     </Spacer>
                     <Spacer>
                         <Input
+                            labelStyle={{
+                                color: "cyan"
+                            }}
                             inputContainerStyle={{
                                 borderColor: "#fff",
                             }}
