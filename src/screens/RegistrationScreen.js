@@ -100,6 +100,11 @@ const RegistrationScreen = ({ navigation }) => {
                     type="clear"
                     title="Already have an account?"
                     onPress={() => {
+                        setFirstName("");
+                        setLastName("");
+                        setEmail("");
+                        setPassword("");
+                        setrepassword("")
                         navigation.navigate('Login')
                     }}
                 />

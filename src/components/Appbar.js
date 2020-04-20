@@ -8,8 +8,6 @@ import ImagePicker from 'react-native-image-picker';
 import { Context as AuthContext } from '../contexts/UserContext'
 const Appbar = ({ navigation, gridList }) => {
     const { state, signOut, profilePic } = useContext(AuthContext);
-    console.log(state);
-
     const [listGrid, setListGrid] = useState(true)
     const [menu, setMenu] = useState(false)
     const [imageUrl, setImg] = useState("")

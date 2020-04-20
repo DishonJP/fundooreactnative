@@ -37,7 +37,6 @@ const HomeScreen = ({ navigation }) => {
     if (state.notes === null) {
         return null
     }
-    console.log(state);
     let allNotes = state.notes.map((item, index) => {
         let labelObj = item.noteLabels.map(item => {
             return <View key={item.id}
@@ -51,13 +50,12 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "46%",
-                    marginRight: upPinCount % 2 === 0 ? 0 : 10,
-                    // marginLeft: index % 2 === 0 ? "auto" : 5,
+                    width: gridList ? "96%" : "48%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
-                    marginTop: 10
+                    marginTop: 10,
+                    alignSelf: "flex-start"
                 }}
                 onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
@@ -105,12 +103,12 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "46%",
-                    marginRight: pinCount % 2 === 0 ? 0 : 10,
+                    width: gridList ? "96%" : "48%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
-                    marginTop: 10
+                    marginTop: 10,
+                    alignSelf: "flex-start"
                 }}
                 onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
@@ -157,13 +155,12 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "46%",
-                    marginRight: archiveCount % 2 === 0 ? 0 : 10,
-                    // marginLeft: index % 2 === 0 ? "auto" : 5,
+                    width: gridList ? "96%" : "48%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
-                    marginTop: 10
+                    marginTop: 10,
+                    alignSelf: "flex-start"
                 }} onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
                 }}>
@@ -212,12 +209,12 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "46%",
-                    marginRight: labelCount % 2 === 0 ? 0 : 10,
+                    width: gridList ? "96%" : "48%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
-                    marginTop: 10
+                    marginTop: 10,
+                    alignSelf: 'flex-start'
                 }} onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
                 }}>
@@ -264,12 +261,12 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "46%",
-                    marginRight: reminderCount % 2 === 0 ? 0 : 10,
+                    width: gridList ? "96%" : "48%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
-                    marginTop: 10
+                    marginTop: 10,
+                    alignSelf: "flex-start"
                 }} onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
                 }}>
@@ -315,12 +312,12 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "46%",
-                    marginRight: trashCount % 2 === 0 ? 0 : 10,
+                    width: gridList ? "96%" : "48%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
-                    marginTop: 10
+                    marginTop: 10,
+                    alignSelf: "flex-start",
                 }} onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
                 }}>
@@ -447,8 +444,8 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         flex: 1,
         marginBottom: 90,
-        marginLeft: 10,
-        width: "100%"
+        width: "100%",
+        justifyContent: "space-around"
     },
     label: {
         flexDirection: "row",
@@ -468,7 +465,8 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         flex: 1,
         marginVertical: 10,
-        marginLeft: 10
+        width: "100%",
+        justifyContent: "space-around"
     }
 })
 export default HomeScreen;

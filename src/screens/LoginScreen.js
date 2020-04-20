@@ -73,6 +73,8 @@ const LoginScreen = ({ navigation }) => {
                         title="Don't have an account?"
                         type="clear"
                         onPress={() => {
+                            setEmail("");
+                            setPassword("")
                             navigation.navigate('Registration')
                         }}
                     />
@@ -96,8 +98,10 @@ LoginScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "slategrey",
+        flexDirection: "row",
         justifyContent: "center",
-        backgroundColor: "slategray"
+        alignItems: "center"
     },
     text: {
         alignSelf: 'center',

@@ -266,8 +266,6 @@ const updateLabel = dispatch => async (field) => {
 }
 const removeLabel = dispatch => async (field) => {
     try {
-        console.log(Config);
-
         console.log(`${Config.REACT_APP_BASE_URL}/notes/${field.userId}/addLabelToNotes/${field.id}/remove`);
 
         const response = await Axios.post(`${Config.REACT_APP_BASE_URL}/notes/${field.userId}/addLabelToNotes/${field.id}/remove`, {

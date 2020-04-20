@@ -5,8 +5,6 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollVi
 import { Context as RootContext } from '../contexts/RootContext'
 import AsyncStorage from '@react-native-community/async-storage'
 const LabelScreen = ({ navigation }) => {
-    console.log(navigation.state.params.noteId);
-
     const { state, addLabel, updateLabel, removeLabel } = useContext(RootContext)
     const [search, setSearch] = useState("")
     let addlabel = [];
@@ -15,7 +13,6 @@ const LabelScreen = ({ navigation }) => {
         noteLabel = navigation.state.params.noteLabels
     }
     for (let i = 0; i < state.label.length; i++) {
-        console.log(noteLabel);
         let count = 0
         for (let j = 0; j < noteLabel.length; j++) {
             if (noteLabel[j].id == state.label[i].id) {
