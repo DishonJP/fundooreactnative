@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native"
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from "react-native"
 import { Divider } from "react-native-elements"
 import { PieChart } from "react-native-chart-kit";
 import { Context as AuthContext } from "../contexts/UserContext"
@@ -9,6 +9,7 @@ import Appbar from "../components/Appbar"
 import Footer from "../components/Footer"
 import Animated from "react-native-reanimated";
 const HomeScreen = ({ navigation }) => {
+    console.disableYellowBox = true;
     const { state, getNotes } = useContext(NoteContext)
     const [gridList, setGridList] = useState(false)
     const [name, setName] = useState("Notes")
@@ -35,7 +36,11 @@ const HomeScreen = ({ navigation }) => {
         setGridList(data)
     }
     if (state.notes === null) {
-        return null
+        return <View style={{
+            flex: 1,
+            justifyContent: "center",
+            alignContent: "center"
+        }}><ActivityIndicator size="large" color="coral" /></View>
     }
     let allNotes = state.notes.map((item, index) => {
         let labelObj = item.noteLabels.map(item => {
@@ -50,7 +55,8 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "48%",
+                    width: gridList ? "98%" : "47%",
+                    marginLeft: "2%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
@@ -103,12 +109,13 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "48%",
+                    width: gridList ? "96%" : "47%",
+                    marginLeft: "2%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
                     marginTop: 10,
-                    alignSelf: "flex-start"
+                    alignSelf: "flex-start",
                 }}
                 onPress={() => {
                     navigation.navigate('EditNote', { notes: item })
@@ -155,7 +162,8 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "48%",
+                    width: gridList ? "96%" : "47%",
+                    marginLeft: "2%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
@@ -209,7 +217,8 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "48%",
+                    width: gridList ? "96%" : "47%",
+                    marginLeft: "2%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
@@ -261,7 +270,8 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "48%",
+                    width: gridList ? "96%" : "47%",
+                    marginLeft: "2%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
@@ -297,7 +307,6 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             </TouchableOpacity>
         }
-
     })
     let trashNotes = state.notes.map((item, index) => {
         let labelObj = item.noteLabels.map(item => {
@@ -312,7 +321,8 @@ const HomeScreen = ({ navigation }) => {
                 key={item.id}
                 style={{
                     backgroundColor: item.color,
-                    width: gridList ? "96%" : "48%",
+                    width: gridList ? "96%" : "47%",
+                    marginLeft: "2%",
                     borderRadius: 10,
                     padding: 10,
                     elevation: 2,
@@ -353,7 +363,10 @@ const HomeScreen = ({ navigation }) => {
     return (
         <SafeAreaView forceInset={{ top: "always", right: "always", bottom: "always" }}>
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={{
+                    flexWrap: "wrap",
+                    flexDirection: "row",
+                }}>
                     <Appbar gridList={ridList} />
                     {name === "Notes" ? <View>
                         <View style={{
@@ -443,9 +456,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         flex: 1,
-        marginBottom: 90,
+        marginBottom: 100,
         width: "100%",
-        justifyContent: "space-around"
     },
     label: {
         flexDirection: "row",
@@ -466,7 +478,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginVertical: 10,
         width: "100%",
-        justifyContent: "space-around"
     }
 })
 export default HomeScreen;

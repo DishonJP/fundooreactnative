@@ -9,6 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Context as RootContext } from '../contexts/RootContext'
 const CreateEdit = ({ navigation, noteData, addNote, id }) => {
+    console.disableYellowBox = true;
     const { archiveNote, colorNote, pinNote, updateReminder, removeReminder, trashNote } = useContext(RootContext)
     const colors = [
         { id: "1", color: "#fff" },

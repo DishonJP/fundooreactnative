@@ -6,6 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Context as RootContext } from '../contexts/RootContext'
 import { Button } from 'react-native-elements'
 const SearchScreen = ({ navigation }) => {
+    console.disableYellowBox = true;
     const { state } = useContext(RootContext)
     const [search, setSearch] = useState("");
     const [height, setHeight] = useState(false)

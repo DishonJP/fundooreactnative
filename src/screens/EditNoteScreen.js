@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native"
 import CreateEdit from "../components/CreateEdit";
 import { Context as RootContext } from '../contexts/RootContext'
 const EditNoteScreen = ({ navigation, }) => {
+    console.disableYellowBox = true;
     const { updateNote } = useContext(RootContext)
     return (
         <CreateEdit

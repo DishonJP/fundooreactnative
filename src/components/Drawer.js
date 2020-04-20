@@ -6,6 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Context as RootContext } from '../contexts/RootContext'
 const Drawer = ({ navigation }) => {
+    console.disableYellowBox = true;
     const { state } = useContext(RootContext);
     const [color, setColor] = useState("a");
     const changeColor = (index) => {

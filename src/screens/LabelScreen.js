@@ -5,28 +5,40 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollVi
 import { Context as RootContext } from '../contexts/RootContext'
 import AsyncStorage from '@react-native-community/async-storage'
 const LabelScreen = ({ navigation }) => {
-    const { state, addLabel, updateLabel, removeLabel } = useContext(RootContext)
-    const [search, setSearch] = useState("")
-    let addlabel = [];
-    let noteLabel = []
-    if (navigation.state.params !== undefined) {
-        noteLabel = navigation.state.params.noteLabels
-    }
-    for (let i = 0; i < state.label.length; i++) {
-        let count = 0
-        for (let j = 0; j < noteLabel.length; j++) {
-            if (noteLabel[j].id == state.label[i].id) {
-                addlabel.push({ label: state.label[i], check: true })
-                count++
-            }
-        }
-        if (count !== 0) {
-            continue;
-        }
-        addlabel.push({ label: state.label[i], check: false })
-    }
 
-    const [label, setLabel] = useState(addlabel);
+    console.disableYellowBox = true;
+    const { state, addLabel, updateLabel, removeLabel, getNotes } = useContext(RootContext)
+    const [label, setLabel] = useState([]);
+    const [load, setLoad] = useState(null);
+    useEffect(() => {
+        console.log("hello");
+        let addlabel = [];
+        let noteLabel = []
+        if (navigation.state.params !== undefined) {
+            noteLabel = navigation.state.params.noteLabels
+        }
+        for (let i = state.label.length - 1; i >= 0; i--) {
+            if (load !== null && i === state.label.length - 1) {
+                addlabel.push({ label: state.label[i], check: true })
+                continue;
+            }
+            let count = 0
+            for (let j = 0; j < noteLabel.length; j++) {
+                if (noteLabel[j].id == state.label[i].id) {
+                    addlabel.push({ label: state.label[i], check: true })
+                    count++
+                }
+            }
+            if (count !== 0) {
+                continue;
+            }
+            addlabel.push({ label: state.label[i], check: false })
+        }
+        setLabel(addlabel)
+    }, [state])
+    console.log(label);
+
+    const [search, setSearch] = useState("")
     let labelObj = label.find(el => {
         return el.label.label.toLocaleLowerCase() === search.toLocaleLowerCase()
     })
@@ -55,10 +67,14 @@ const LabelScreen = ({ navigation }) => {
                 </View>
                 {labelObj || search === "" ?
                     null : <TouchableOpacity onPress={async () => {
+
+                        setLoad(Math.random(1000))
                         addLabel({
                             label: search, isDeleted: false,
                             userId: JSON.parse(await AsyncStorage.getItem('token')).userId
                         })
+                        getNotes()
+                        setSearch("")
                     }}>
                         <View style={styles.create}>
                             <Feather style={styles.icon} name="plus" size={25} color="dodgerblue" />
@@ -78,6 +94,7 @@ const LabelScreen = ({ navigation }) => {
                                     let labelarray = [];
                                     if (item.check === false) {
                                         if (2 == navigation.state.params.id) {
+
                                             const field = {
                                                 userId: navigation.state.params.noteId,
                                                 id: item.label.id

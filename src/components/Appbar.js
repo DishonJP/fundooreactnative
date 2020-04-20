@@ -7,6 +7,7 @@ import { withNavigation } from 'react-navigation'
 import ImagePicker from 'react-native-image-picker';
 import { Context as AuthContext } from '../contexts/UserContext'
 const Appbar = ({ navigation, gridList }) => {
+    console.disableYellowBox = true;
     const { state, signOut, profilePic } = useContext(AuthContext);
     const [listGrid, setListGrid] = useState(true)
     const [menu, setMenu] = useState(false)

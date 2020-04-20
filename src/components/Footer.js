@@ -7,6 +7,7 @@ import { StyleSheet, View, TouchableOpacity, TextInput, Image } from 'react-nati
 import { } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 const Footer = ({ navigation }) => {
+    console.disableYellowBox = true;
     return (
         <View style={styles.container}>
             <View style={{

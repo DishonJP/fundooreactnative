@@ -6,6 +6,7 @@ import EvilIcons from "react-native-vector-icons/EvilIcons"
 import AsyncStorage from '@react-native-community/async-storage'
 import { Context as RootContext } from '../contexts/RootContext'
 const CollaboratorScreen = ({ navigation }) => {
+    console.disableYellowBox = true;
     const { state } = useContext(RootContext);
     const [email, setEmail] = useState("");
     const [search, setSearch] = useState("");

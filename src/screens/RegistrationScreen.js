@@ -5,6 +5,7 @@ import Spacer from "../components/Spacer"
 import { Context as AuthContext } from '../contexts/UserContext'
 import Snackbar from "react-native-snackbar"
 const RegistrationScreen = ({ navigation }) => {
+    console.disableYellowBox = true;
     const { state, signUp } = useContext(AuthContext)
     const [firstName, setFirstName] = useState("");
     const [fError, setFError] = useState(false)
@@ -35,14 +36,20 @@ const RegistrationScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Spacer>
-                    <Text style={{
-                        alignSelf: "center",
-                        color: "coral"
-                    }} h3>Registration</Text>
-                </Spacer>
-                <Spacer>
+                <Text style={{
+                    alignSelf: "center",
+                    color: "coral",
+                    marginBottom: 30
+                }} h3>Registration</Text>
+                <View style={styles.view}>
                     <Input
+                        errorStyle={{
+                            padding: 0,
+                            margin: 0
+                        }}
+                        inputContainerStyle={{
+                            height: 40
+                        }}
                         label="firstname"
                         value={firstName}
                         onChangeText={setFirstName}
@@ -50,9 +57,16 @@ const RegistrationScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
-                </Spacer>
-                <Spacer>
+                </View>
+                <View style={styles.view}>
                     <Input
+                        errorStyle={{
+                            padding: 0,
+                            margin: 0
+                        }}
+                        inputContainerStyle={{
+                            height: 40
+                        }}
                         label="lastname"
                         value={lastName}
                         onChangeText={setLastName}
@@ -60,9 +74,16 @@ const RegistrationScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
-                </Spacer>
-                <Spacer>
+                </View>
+                <View style={styles.view}>
                     <Input
+                        errorStyle={{
+                            padding: 0,
+                            margin: 0
+                        }}
+                        inputContainerStyle={{
+                            height: 40
+                        }}
                         label="email"
                         value={email}
                         errorMessage={emailErr ? "invalid email" : null}
@@ -70,9 +91,16 @@ const RegistrationScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
-                </Spacer>
-                <Spacer>
+                </View>
+                <View style={styles.view}>
                     <Input
+                        errorStyle={{
+                            padding: 0,
+                            margin: 0
+                        }}
+                        inputContainerStyle={{
+                            height: 40
+                        }}
                         secureTextEntry
                         label="password"
                         errorMessage={passErr ? "minimum character of 6" : null}
@@ -81,9 +109,16 @@ const RegistrationScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
-                </Spacer>
-                <Spacer>
+                </View>
+                <View style={styles.view}>
                     <Input
+                        errorStyle={{
+                            padding: 0,
+                            margin: 0
+                        }}
+                        inputContainerStyle={{
+                            height: 40
+                        }}
                         secureTextEntry
                         label="re-enter-password"
                         errorMessage={rePasErr ? "password does not match" : null}
@@ -92,8 +127,9 @@ const RegistrationScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
-                </Spacer>
+                </View>
                 <Button
+                    containerStyle={{ marginTop: 10 }}
                     titleStyle={{
                         color: "coral"
                     }}
@@ -108,17 +144,16 @@ const RegistrationScreen = ({ navigation }) => {
                         navigation.navigate('Login')
                     }}
                 />
-                <Spacer>
-                    <Button
-                        buttonStyle={{
-                            backgroundColor: "coral",
-                            width: 150,
-                            alignSelf: "center"
-                        }}
-                        title="Sign Up"
-                        onPress={handleSubmit}
-                    />
-                </Spacer>
+                <Button
+                    containerStyle={{ marginTop: 20 }}
+                    buttonStyle={{
+                        backgroundColor: "coral",
+                        width: 150,
+                        alignSelf: "center"
+                    }}
+                    title="Sign Up"
+                    onPress={handleSubmit}
+                />
             </ScrollView>
         </View>
     )
@@ -131,8 +166,14 @@ RegistrationScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: "row",
         justifyContent: "center",
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        alignItems: "center",
+        padding: 20
+    },
+    view: {
+        height: 80
     }
 })
 export default RegistrationScreen;

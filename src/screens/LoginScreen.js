@@ -6,6 +6,7 @@ import { Context as AuthContext } from '../contexts/UserContext'
 import { SafeAreaView } from "react-navigation"
 import Snackbar from "react-native-snackbar"
 const LoginScreen = ({ navigation }) => {
+    console.disableYellowBox = true;
     const { state, signIn } = useContext(AuthContext)
     const [email, setEmail] = useState("");
     const [emailErr, setEmaErr] = useState(false);
@@ -30,19 +31,22 @@ const LoginScreen = ({ navigation }) => {
         }}>
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Spacer>
-                        <Text style={styles.text} h3>Login</Text>
-                    </Spacer>
-                    <Spacer>
+                    <Text style={styles.text} h3>Login</Text>
+                    <View style={styles.view}>
                         <Input
                             labelStyle={{
                                 color: "cyan"
                             }}
                             inputContainerStyle={{
-                                borderColor: "#fff"
+                                borderColor: "#fff",
+                                height: 40
                             }}
                             inputStyle={{
                                 color: "#fff"
+                            }}
+                            errorStyle={{
+                                padding: 0,
+                                margin: 0
                             }}
                             label="Email"
                             value={email}
@@ -51,14 +55,19 @@ const LoginScreen = ({ navigation }) => {
                             autoCorrect={false}
                             onChangeText={setEmail}
                         />
-                    </Spacer>
-                    <Spacer>
+                    </View>
+                    <View style={styles.view}>
                         <Input
                             labelStyle={{
                                 color: "cyan"
                             }}
+                            errorStyle={{
+                                padding: 0,
+                                margin: 0
+                            }}
                             inputContainerStyle={{
                                 borderColor: "#fff",
+                                height: 40
                             }}
                             inputStyle={{
                                 color: "#fff"
@@ -71,8 +80,9 @@ const LoginScreen = ({ navigation }) => {
                             onChangeText={setPassword}
                             secureTextEntry={true}
                         />
-                    </Spacer>
+                    </View>
                     <Button
+                        containerStyle={{ marginTop: 10 }}
                         titleStyle={{
                             color: "cyan"
                         }}
@@ -84,13 +94,13 @@ const LoginScreen = ({ navigation }) => {
                             navigation.navigate('Registration')
                         }}
                     />
-                    <Spacer>
-                        <Button buttonStyle={{
+                    <Button
+                        containerStyle={{ marginTop: 20 }}
+                        buttonStyle={{
                             backgroundColor: "cyan",
                             width: 150,
                             alignSelf: "center"
                         }} title="Sign in" onPress={handleSubmit} />
-                    </Spacer>
                 </ScrollView>
             </View>
         </SafeAreaView>
@@ -107,12 +117,17 @@ const styles = StyleSheet.create({
         backgroundColor: "slategrey",
         flexDirection: "row",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        padding: 20
     },
     text: {
         alignSelf: 'center',
         color: "cyan",
-        letterSpacing: 1
+        letterSpacing: 1,
+        marginBottom: 30
+    },
+    view: {
+        height: 80
     }
 })
 export default LoginScreen;

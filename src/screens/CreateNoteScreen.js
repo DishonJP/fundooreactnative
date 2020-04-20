@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react"
 import { Context as NoteContext } from '../contexts/RootContext'
 import CreateEdit from "../components/CreateEdit"
 const CreateNoteScreen = ({ navigation }) => {
+    console.disableYellowBox = true;
     const { addNote } = useContext(NoteContext)
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -13,7 +14,6 @@ const CreateNoteScreen = ({ navigation }) => {
     const [collaborators, setCollab] = useState([])
     const [noteLabels, setLabel] = useState([])
     const [labelIdList, setId] = useState([])
-    console.log(navigation);
 
     return (
         <CreateEdit
