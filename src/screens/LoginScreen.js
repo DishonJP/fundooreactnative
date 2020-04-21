@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { View, StyleSheet, ScrollView } from "react-native"
 import { Text, Button, Input } from 'react-native-elements'
-import Spacer from "../components/Spacer"
+import Toast from "../ToastExample"
 import { Context as AuthContext } from '../contexts/UserContext'
 import { SafeAreaView } from "react-navigation"
 import Snackbar from "react-native-snackbar"
@@ -18,13 +18,10 @@ const LoginScreen = ({ navigation }) => {
         password !== "" ? (setPassErr(false), count++) : setPassErr(true);
         count === 2 ? signIn({ email, password }) : null
     }
-    state.error === true ?
-        Snackbar.show({
-            title: state.errorMessage,
-            duration: Snackbar.LENGTH_LONG,
-            textColor: "black",
-            backgroundColor: "cyan"
-        }) : null
+    useEffect(() => {
+        state.error === true ?
+            Toast.show("Somthing went wrong", Toast.SHORT) : null
+    }, [state])
     return (
         <SafeAreaView style={{
             flex: 1
